@@ -2,6 +2,7 @@ const util = require('../modules/util');
 const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const request = require('request');
+const kakaoOptions = require('../config/kakao');
 
 const search = {
   kakao: async (req, res) => {
