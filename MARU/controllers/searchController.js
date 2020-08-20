@@ -7,7 +7,8 @@ const search = {
     kakao: async(req, res) => {
         const title = req.params.query;
         console.log(title);
-        let kakaoOptions = {
+        let kakaoOptions =
+         {
             url: `https://dapi.kakao.com/v3/search/book?target=title`,
             method: 'GET',
             headers: {
