@@ -4,4 +4,5 @@ const searchController = require('../controllers/searchController');
 
 router.get('/kakao', searchController.kakao);
 
+
 module.exports = router;
