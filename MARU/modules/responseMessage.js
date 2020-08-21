@@ -40,5 +40,7 @@ module.exports = {
     ADD_REVIEW_SUCCESS: '리뷰 추가 성공',
     NO_ADD_REVIEW : "리뷰를 등록할 수 없습니다",
     SUCCESS_REVIEW : "리뷰를 등록할 수 있습니다",
-    LOGIN_SUCCESS : "로그인 성공했습니다"
+    LOGIN_SUCCESS : "로그인 성공했습니다",
+    SERVER_ERROR : "서버에러입니다",
+    MAKE_ROOM_SUCCESS : "토론방 만들기 성공입니다",
 };
