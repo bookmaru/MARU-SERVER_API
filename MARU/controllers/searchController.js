@@ -15,6 +15,11 @@ const search = {
     const { title } = req.query;
     const test = await kakaoOptions.kakaoTest(title);
 
+    if (!title) {
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+      return;
+    }
+
     request(test, function (err, response, body) {
       if (!err && response.statusCode == 200) {
         const book = JSON.parse(body).documents;
