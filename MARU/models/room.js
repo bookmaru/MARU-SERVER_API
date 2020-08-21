@@ -10,8 +10,7 @@ const room = {
     const query = `INSERT INTO ${table}(${fileds}) VALUES(${questions})`; 
     try {
       const result = await pool.queryParamArr(query, values);
-      return insertId = result.insertId;
-      return insertId;
+      return result.insertId;
     } catch (err) {
       console.log(err);
       throw err;
