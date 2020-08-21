@@ -53,8 +53,7 @@ module.exports = {
 
         res.status(statusCode.OK)
             .send(util.success(statusCode.OK, resMessage.CREATED_USER, {
-                accessToken: token,
-                userIdx : user[0].userIdx
+                accessToken: token
                 //, refreshToken: refreshToken
             }));
             
@@ -95,8 +94,7 @@ module.exports = {
         // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
         res.status(statusCode.OK)
             .send(util.success(statusCode.OK, resMessage.LOGIN_SUCCESS, {
-                accessToken: token,
-                userIdx : user[0].userIdx
+                accessToken: token
         }));
     },
 
