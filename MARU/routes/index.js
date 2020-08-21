@@ -4,6 +4,6 @@ const router = express.Router();
 router.use('/search', require('./search'));
 router.use('/user', require('./user'));
 router.use('/room', require('./room'));
-router.use('/chat', require('./chat'));
+//router.use('/chat', require('./chat'));
 
 module.exports = router;
