@@ -15,7 +15,7 @@ const room = {
       console.log(err);
       throw err;
     }
-  }
+  } 
 }
 
 module.exports = room;
