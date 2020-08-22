@@ -43,5 +43,6 @@ module.exports = {
     LOGIN_SUCCESS : "로그인 성공했습니다",
     SERVER_ERROR : "서버에러입니다",
     MAKE_ROOM_SUCCESS : "토론방 만들기 성공입니다",
-    UPDATE_RATING : "평가가 제출되었습니다."
+    UPDATE_RATING : "평가가 제출되었습니다.",
+    SUCCESS_LOGOUT : "로그아웃 되었습니다."
 };

@@ -7,6 +7,7 @@ router.post('/signup', userController.signup);
 router.post('/signin', userController.signin);
 router.post('/checkId', userController.checkUserId);
 router.post('/checkNick', userController.checkUserNickName);
-router.post('/rating', middleware.userJwt, userController.rating);
+router.post('/rating', userController.rating);
 router.get('/profile', middleware.userJwt, userController.profile);
+
 module.exports = router;
