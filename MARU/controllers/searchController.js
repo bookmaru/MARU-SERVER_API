@@ -65,6 +65,9 @@ const search = {
       return;
     }
 
+    const roomResult = await searchModel.searchRoom(title);
+    
+    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, roomResult));
     
   }
 }
