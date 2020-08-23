@@ -93,7 +93,21 @@ const user = {
       console.log('rating ERROR : ', err);
       throw err;
     }
-  }
+  },
+
+  withdrawal : async (userIdx) => {
+    const query = `DELETE FROM ${table} WHERE userIdx = ${userIdx} `;
+    try{
+      const result = await pool.queryParam(query);
+      if (result.length === 0) {
+        return false;
+      } 
+      return true;
+    } catch (err) {
+      console.log('withdrawal ERROR : ', err);
+      throw err;
+    }
+  },
 }
 
 module.exports = user;
