@@ -33,6 +33,66 @@ const room = {
 
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS));
       
+    },
+
+    /** 
+     * @summary 토론방 제한
+     * @param token
+     * @return 
+     */
+  
+    limitLeader: async (req, res) => {
+      const userIdx = req.userIdx;
+      
+      if (!userIdx) {
+        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
+        return;
+      }
+
+      const CheckLimitMakeRoom = await roomModel.limitMakeRoom(userIdx);
+
+      // 방을 만들 수 있을 때
+      if (CheckLimitMakeRoom) {
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_MAKE_ROOM));
+        return;
+      }
+
+      // 방장 제한 
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NOT_POSSIBLE_MAKE_ROOM));
+    },
+
+    /** 
+     * @summary 토론방 참여 제한
+     * @param token, roomIdx
+     * @return 
+     */
+
+    limitJoin: async (req, res) => {
+      const roomIdx = req.params.roomIdx;
+      const userIdx = req.userIdx;
+
+      if (!userIdx) {
+        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
+        return;
+      }
+
+      if (!roomIdx) {
+        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+        return;
+      }
+
+      const limitParticipant = await roomModel.limitJoin(roomIdx, userIdx);
+      
+      // 토론방 참여 가능
+      if (limitParticipant) {
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_JOIN_ROOM));
+        return;
+      }
+
+      // 토론방 참여 불가능
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NOT_POSSIBLE_JOIN_ROOM));
+
+      
     }
 }
 
