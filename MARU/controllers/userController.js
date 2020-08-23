@@ -6,7 +6,7 @@ const encrypt = require('../modules/crypto');
 const jwt = require('../modules/jwt');
 
 module.exports = {
-  signup: async ( req, res ) => {
+  signup : async ( req, res ) => {
     const {
       id,
       password,
@@ -60,7 +60,7 @@ module.exports = {
       }));
       
   },
-  signin: async (req, res) => {
+  signin : async (req, res) => {
     const {
       id,
       password
@@ -100,9 +100,40 @@ module.exports = {
     }));
   },
 
-  profile: async(req, res) => {
+  withdrawal : async (req, res) => {
+    const { password} = req.body;
     const userIdx = req.userIdx;
 
+    if (!userIdx || !password) {
+      res.status(statusCode.BAD_REQUEST)
+        .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+      return;
+    }
+    // User의 아이디가 있는지 확인 - 없다면 NO_USER 반납
+    const user = await userModel.getUserByIdx(userIdx);
+
+    if (user[0] === undefined) {
+      return res.status(statusCode.BAD_REQUEST)
+        .send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_USER));
+    }
+
+    // req의 Password 확인 - 틀렸다면 MISS_MATCH_PW 반납
+    const hashed = await encrypt.encryptWithSalt(password, user[0].salt);
+
+    if (hashed !== user[0].password) {
+      return res.status(statusCode.BAD_REQUEST)
+        .send(util.fail(statusCode.BAD_REQUEST, resMessage.MISS_MATCH_PW));
+    }
+
+    const idx = await userModel.withdrawal(userIdx);
+
+    // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
+    res.status(statusCode.OK)
+      .send(util.success(statusCode.OK, resMessage.WITHDRAWAL_SUCCESS));
+  },
+
+  profile : async(req, res) => {
+    const userIdx = req.userIdx;
     if (!userIdx) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN))
       return;
@@ -113,7 +144,7 @@ module.exports = {
     ))
   },
 
-  checkUserId: async(req, res) => {
+  checkUserId : async(req, res) => {
     const {id} = req.body;
 
     if (!id) {
@@ -131,7 +162,7 @@ module.exports = {
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.AVAILABLE_ID))
   },
 
-  checkUserNickName: async(req, res) => {
+  checkUserNickName : async(req, res) => {
     const {nickName} = req.body;
 
     if (!nickName) {
@@ -170,6 +201,5 @@ module.exports = {
         roomLeaderIdx : userIdx,
         rating : rating
       }));
-        
 }
 }
