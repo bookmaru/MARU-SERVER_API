@@ -33,11 +33,11 @@ const room = {
   },
 
   // 토론방 참여 제한
-  limitJoin: async (roomIdx, userIdx) => {
-    const query = `SELECT * FROM participant WHERE userIdx = ${userIdx} and roomIdx = ${roomIdx}`;
+  limitJoin: async (userIdx) => {
+    const query = `SELECT * FROM participant WHERE userIdx = ${userIdx}`;
     try {
       const result = await pool.queryParam(query);
-      if (result.length === 0) {
+      if (result.length < 2) {
         return true;
       }
       return false;

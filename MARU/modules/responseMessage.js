@@ -4,6 +4,9 @@ module.exports = {
     SERVER_ERROR : "서버에러입니다",
     EMPTY_TOKEN : "토큰이 존재하지 않습니다",
 
+    // 메인 뷰
+    SUCCESS_MAIN_VIEW_LIST: "메인화면 조회 성공입니다",
+
     // 회원
     MISS_MATCH_PW : "로그인 정보가 일치하지 않습니다",
     ALREADY_ID : "유저가 이미 존재합니다",

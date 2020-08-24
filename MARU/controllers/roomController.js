@@ -68,7 +68,6 @@ const room = {
      */
 
     limitJoin: async (req, res) => {
-      const roomIdx = req.params.roomIdx;
       const userIdx = req.userIdx;
 
       if (!userIdx) {
@@ -76,12 +75,7 @@ const room = {
         return;
       }
 
-      if (!roomIdx) {
-        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
-        return;
-      }
-
-      const limitParticipant = await roomModel.limitJoin(roomIdx, userIdx);
+      const limitParticipant = await roomModel.limitJoin(userIdx);
       
       // 토론방 참여 가능
       if (limitParticipant) {
