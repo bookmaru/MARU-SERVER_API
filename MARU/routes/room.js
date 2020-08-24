@@ -5,7 +5,7 @@ const middleware = require('../modules/middlewares');
 
 router.post('/make', middleware.userJwt, roomController.make);
 router.get('/limitLeader', middleware.userJwt, roomController.limitLeader);
-router.get('/limitJoin/:roomIdx', middleware.userJwt, roomController.limitJoin);
+router.get('/limitJoin', middleware.userJwt, roomController.limitJoin);
 
 
-module.exports = router;
+module.exports = router
