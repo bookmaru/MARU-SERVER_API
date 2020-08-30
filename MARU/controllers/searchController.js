@@ -4,6 +4,7 @@ const resMessage = require('../modules/responseMessage');
 const request = require('request');
 const kakaoOptions = require('../config/kakao');
 const searchModel = require('../models/search');
+const qs = require('querystring');
 
 const search = {
 
@@ -14,10 +15,11 @@ const search = {
      */
   kakao: async (req, res) => {
     const { title } = req.query;
-    console.log(title);
-    const kakao = await kakaoOptions.kakaoTest(title);
+    const encodedStr = qs.escape(title);
 
-    if (!title) {
+    const kakao = await kakaoOptions.kakaoTest(encodedStr);
+
+    if (!title || !encodedStr) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
     }
