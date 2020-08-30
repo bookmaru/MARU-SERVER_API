@@ -10,4 +10,4 @@ router.post('/checkNick', userController.checkUserNickName); //닉네임 중복�
 router.post('/rating', userController.rating); //방장 별점 평가
 router.get('/profile', middleware.userJwt, userController.profile); //내 프로필 조회
 router.post('/withdrawal', middleware.userJwt, userController.withdrawal); //회원탈퇴
-module.exports = router;
+module.exports = router; 
