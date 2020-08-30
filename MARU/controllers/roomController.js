@@ -4,6 +4,7 @@ const resMessage = require('../modules/responseMessage');
 const roomModel = require('../models/room');
 
 const room = {
+  
   /** 
      * @summary 토론방 만들기
      * @param token, thumbnail, authors, title, quiz (1 ~ 5), answer (1 ~ 5), createdAt 
