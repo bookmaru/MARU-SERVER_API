@@ -14,6 +14,8 @@ const main = {
     const mainViewList = await mainModel.view();
     const newRoomList = await mainModel.newRoom();
 
+  
+
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_MAIN_VIEW_LIST, {
       maxRoomList: mainViewList,
