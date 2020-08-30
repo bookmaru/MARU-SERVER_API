@@ -15,8 +15,8 @@ const search = {
      */
   kakao: async (req, res) => {
     const { title } = req.query;
-    
-    const encodedStr = qs.escape(title);
+
+    const encodedStr = qs.unescape(title);
 
     const kakao = await kakaoOptions.kakaoTest(encodedStr);
 
