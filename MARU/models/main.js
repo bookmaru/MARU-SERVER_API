@@ -10,7 +10,6 @@ const main = {
       return result;
     } catch (err) {
       console.log(err);
-      throw err;
     }
   },
 
@@ -21,7 +20,6 @@ const main = {
       return result;
     } catch (err) {
       console.log(err);
-      throw err;
     }
   }
   

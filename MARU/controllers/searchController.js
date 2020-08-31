@@ -15,7 +15,6 @@ const search = {
      */
   kakao: async (req, res) => {
     const { title } = req.query;
-    console.log(title);
 
     const kakao = await kakaoOptions.kakaoTest(title);
 
