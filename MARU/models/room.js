@@ -13,7 +13,6 @@ const room = {
       return result.insertId;
     } catch (err) {
       console.log(err);
-      throw err;
     }
   },
 
@@ -28,7 +27,6 @@ const room = {
       return false;
     } catch (err) {
       console.log(err);
-      throw err;
     }
   },
 
