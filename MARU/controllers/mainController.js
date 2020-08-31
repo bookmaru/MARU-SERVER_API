@@ -12,7 +12,7 @@ const main = {
      */
   mainView1: async (req, res) => {
     // 방의 개수가 많은 순서대로
-    const popularViewList = await mainModel.view();
+    const popularViewList = await mainModel.ManyRoom();
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_MAIN_VIEW_LIST1, {
       popularRoomList: popularViewList,
