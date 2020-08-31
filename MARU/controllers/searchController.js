@@ -4,6 +4,7 @@ const resMessage = require('../modules/responseMessage');
 const request = require('request');
 const kakaoOptions = require('../config/kakao');
 const searchModel = require('../models/search');
+const qs = require('querystring');
 
 const search = {
 
@@ -14,6 +15,7 @@ const search = {
      */
   kakao: async (req, res) => {
     const { title } = req.query;
+
     const kakao = await kakaoOptions.kakaoTest(title);
 
     if (!title) {
