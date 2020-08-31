@@ -5,7 +5,9 @@ module.exports = {
     EMPTY_TOKEN : "토큰이 존재하지 않습니다",
 
     // 메인 뷰
-    SUCCESS_MAIN_VIEW_LIST: "메인화면 조회 성공입니다",
+    SUCCESS_MAIN_VIEW_LIST1: "모임이 많은 책 조회 성공입니다",
+    SUCCESS_MAIN_VIEW_LIST2 : "새로 나온 몽미 조회 성공입니다",
+    SUCCESS_MY_ROOM_LIST : "나의 모임 조회 성공입니다",
 
     // 회원
     MISS_MATCH_PW : "로그인 정보가 일치하지 않습니다",
