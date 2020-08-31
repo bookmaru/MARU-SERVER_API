@@ -108,6 +108,16 @@ const user = {
       throw err;
     }
   },
+
+  myRoomList: async (userIdx) => {
+    const query = `SELECT r.thumbnail, r.authors, r.title, r.info FROM ${table} u JOIN room r ON u.userIdx = r.userIdx WHERE u.userIdx = ${userIdx}`;
+    try {
+      const result = await pool.queryParam(query);
+      return result;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 module.exports = user;

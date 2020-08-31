@@ -13,8 +13,8 @@ const main = {
     }
   },
 
-  newRoom: async() => {
-    const query = `SELECT r.roomIdx, r.thumbnail, r.authors, r.title, r.info, u.nickName FROM room r JOIN user u ON r.userIdx = u.userIdx ORDER BY roomIdx DESC LIMIT 0, 9`;
+  newRoom: async(pageStart, pageEnd) => {
+    const query = `SELECT r.roomIdx, r.thumbnail, r.authors, r.title, r.info, u.nickName FROM room r JOIN user u ON r.userIdx = u.userIdx ORDER BY roomIdx DESC LIMIT ${pageStart}, ${pageEnd}`;
     try {
       const result = await pool.queryParam(query);
       return result;
