@@ -21,8 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 const chat = require('./routes/chat');
-const { connected } = require('process');
-app.use('/chat', chat);
+app.use('/chat/:roomIdx', chat);
 app.use('/', indexRouter);
 app.use('/css', express.static('./static/css'))
 app.use('/js', express.static('./static/js'))
@@ -66,13 +65,13 @@ app.get('/', function(request, response) {
     }
   })
 })
-let room = ['room1', 'room2', 'room3'];
+let room='room';
 let a = 0;
 
 io.on('connection', (socket) => {
-  // socket.on('disconnect', () => {
-  //   console.log('user disconnected');
-  // });
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 
 
   // socket.on('leaveRoom', (num, name) => {
@@ -83,19 +82,17 @@ io.on('connection', (socket) => {
   // });
 
 
-  socket.on('joinRoom', (num, name,cnt) => {
-    var cnt=Object.keys(io.sockets.in(room[num]).connected).length //room마다 다르게 고칠 것
-    socket.join(room[num], () => {
-      console.log(name + ' join a ' + room[num]);
-      console.log(Object.keys(io.sockets.in(room[num]).connected).length)
-      io.to(room[num]).emit('joinRoom', num, name,cnt);
+  socket.on('joinRoom', (name) => {
+    socket.join(room, () => {
+      console.log(name + ' join a ' + room);
+      //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
+      io.to(room).emit('joinRoom', name);
     });
   });
 
 
-  socket.on('chat message', (num, name, msg) => {
-    a = num;
-    io.to(room[a]).emit('chat message', name, msg);
+  socket.on('chat message', (name, msg) => {
+    io.to(room).emit('chat message', name, msg);
   });
 
 
