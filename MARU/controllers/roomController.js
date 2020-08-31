@@ -121,6 +121,31 @@ const room = {
       if( result.length === 0 ) {
           res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.NO_ROOM));
       }
+    },
+
+
+     /** 
+     * @summary 토론방 퀴즈 합격 여부
+     * @param token, flag, roomIdx
+     * @return 
+     */
+
+    checkQuiz: async (req, res) => {
+      const userIdx = req.userIdx;
+
+      if (!userIdx) {
+        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
+        return;
+      }
+
+      const {roomIdx, isCheck} = req.body;
+
+      if (!roomIdx || !isCheck) {
+        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+        return;
+      }
+
+      // 새로운 DB 테이블에 넣기 
     }
 }
 
