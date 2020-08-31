@@ -30,4 +30,9 @@ module.exports = {
     UPDATE_RATING : "평가가 제출되었습니다.",
     POSSIBLE_JOIN_ROOM : "토론방 참여가 가능합니다",
     NOT_POSSIBLE_JOIN_ROOM : "토론방 참여가 불가능합니다",
+    //토론방 소개
+    READ_ROOM_SUCCESS: "토론방 소개 조회 성공",
+    //퀴즈 맞추기
+    READ_QUIZ_SUCCESS: "퀴즈와 정답 불러오기 성공",
+    NO_ROOM: "해당하는 토론방이 없습니다."
 };
