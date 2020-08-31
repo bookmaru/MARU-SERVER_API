@@ -49,11 +49,6 @@
   </style>
 </head>
 <body>
-<select>
-  <option value="Room1">Room1</option>
-  <option value="Room2">Room2</option>
-  <option value="Room3">Room3</option>
-</select>
 <ul id="messages"></ul>
 <form action="">
   <input id="m" autocomplete="off"/>
@@ -65,23 +60,16 @@
   $(() => {
     const name = prompt('What your name');
     const socket = io();
-    let room = ['room1', 'room2', 'room3'];
-    let num = 0;
-    let cnt=0;
-    socket.emit('joinRoom', num, name,cnt);
+    socket.emit('joinRoom', name,);
 
     $('select').change(() => {
       //socket.emit('leaveRoom', num, name);
-      num++;
-      num%=3;
-      cnt=0
-      socket.emit('joinRoom', num, name,cnt);
+      socket.emit('joinRoom', name);
 
     });
 
-
     $('form').submit(() => {
-      socket.emit('chat message', num, name, $('#m').val());
+      socket.emit('chat message', name, $('#m').val());
       $('#m').val('');
       return false;
     });
@@ -95,9 +83,8 @@
     //   $('#messages').append($('<li>').text(name + '    leaved '
     //     + room[num] + ' :('));
     // });
-    socket.on('joinRoom', (num, name,cnt) => {
-      $('#messages').append($('<li>').text(name + '    님이 참여했습니다. '
-        + room[num] +' '+cnt +'/5 이 참여중입니다.'+ ':)'));
+    socket.on('joinRoom', (name) => {
+      $('#messages').append($('<li>').text(name + '    님이 참여했습니다. '));
         
     });
   });

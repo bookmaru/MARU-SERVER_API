@@ -17,6 +17,21 @@ const room = {
     }
   },
 
+    // 토론방에 방장 userIdx추가 - participant 테이블
+    addUser : async (userIdx, roomIdx) => {
+      const fileds = 'userIdx, roomIdx';
+      const questions = `?, ?`;
+      const values = [userIdx, roomIdx];
+      const query = `INSERT INTO participant(${fileds}) VALUES(${questions})`; 
+      try {
+        const result = await pool.queryParamArr(query, values);
+        return result.insertId;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    },
+
   // 토론방 방장 제한
   limitMakeRoom: async (userIdx) => {
     const query = `SELECT * FROM ${table} WHERE userIdx = ${userIdx}`;
@@ -45,7 +60,18 @@ const room = {
       console.log(err);
       throw err;
     }
-  }
+  },
+   // roomIdx 가져오기
+  getRoomIdx: async (userIdx) => {
+    const query = `SELECT roomIdx FROM ${table} WHERE userIdx = ${userIdx}`;
+    try {
+      const result = await pool.queryParam(query);
+      return result[0].roomIdx;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
 }
 
 module.exports = room;
