@@ -133,11 +133,13 @@ const room = {
     checkQuiz: async (req, res) => {
       const userIdx = req.userIdx;
 
+      // 토큰이 없을 때
       if (!userIdx) {
         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
         return;
       }
 
+      // 해당 roomIdx, 퀴즈 합격여부 (true, false)
       const {roomIdx, isCheck} = req.body;
 
       if (!roomIdx || !isCheck) {

@@ -8,7 +8,7 @@ router.get('/limitLeader', middleware.userJwt, roomController.limitLeader);
 router.get('/limitJoin', middleware.userJwt, roomController.limitJoin);
 router.get('/roomInfo/:roomIdx', roomController.mainRoom);
 router.get('/roomQuiz/:roomIdx',middleware.userJwt, roomController.quizRoom);
-router.post('/CheckQuiz', middleware.userJwt, roomController.checkQuiz);
+router.post('/checkQuiz', middleware.userJwt, roomController.checkQuiz);
 
 
 module.exports = router
