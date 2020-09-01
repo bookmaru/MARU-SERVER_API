@@ -33,14 +33,16 @@ const room = {
       }
       
       const roomIdx = await roomModel.getRoomIdx(userIdx);
-      console.log(roomIdx);
+  
       const addLeader = await roomModel.addUser(userIdx, roomIdx);
 
-      if ( addLeader === -1 ) {
+      if (addLeader === -1) {
         return res.status(statusCode.DB_ERROR)
           .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
       }
-    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS,roomIdx));
+    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS,{
+      roomIdx : roomIdx
+    }));
     },
 
     /** 
