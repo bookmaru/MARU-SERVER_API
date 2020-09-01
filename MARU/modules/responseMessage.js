@@ -5,7 +5,9 @@ module.exports = {
     EMPTY_TOKEN : "토큰이 존재하지 않습니다",
 
     // 메인 뷰
-    SUCCESS_MAIN_VIEW_LIST: "메인화면 조회 성공입니다",
+    SUCCESS_MAIN_VIEW_LIST1: "모임이 많은 책 조회 성공입니다",
+    SUCCESS_MAIN_VIEW_LIST2 : "새로 나온 몽미 조회 성공입니다",
+    SUCCESS_MY_ROOM_LIST : "나의 모임 조회 성공입니다",
 
     // 회원
     MISS_MATCH_PW : "로그인 정보가 일치하지 않습니다",
@@ -34,5 +36,7 @@ module.exports = {
     READ_ROOM_SUCCESS: "토론방 소개 조회 성공",
     //퀴즈 맞추기
     READ_QUIZ_SUCCESS: "퀴즈와 정답 불러오기 성공",
-    NO_ROOM: "해당하는 토론방이 없습니다."
+    NO_ROOM: "해당하는 토론방이 없습니다.",
+    SUCCESS_QUIZ_SOLVED: "퀴즈 합격입니다",
+    FAIL_QUIZ_SOLVED: "퀴즈 불합격입니다",
 };

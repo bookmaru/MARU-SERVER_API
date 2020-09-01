@@ -13,6 +13,7 @@ const room = {
       return result.insertId;
     } catch (err) {
       console.log(err);
+      throw err;
     }
   },
 
@@ -104,6 +105,30 @@ quizRoom: async(userIdx, roomIdx)=>{
       throw err;
     }
   },
+
+  // 퀴즈 합격
+  quizPass: async(userIdx, roomIdx) => {
+    const query = `INSERT INTO participant (userIdx, roomIdx) VALUES (${userIdx}, ${roomIdx})`;
+    try {
+      const result = await pool.queryParam(query);
+      return result;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+
+  // 퀴즈 불합격
+  quizFail: async (userIdx, roomIdx) => {
+    const query = `INSERT INTO quizFail (userIdx, roomIdx, entry) VALUES (${userIdx}, ${roomIdx}, 'FAIL')`;
+    try {
+      const result = await pool.queryParam(query);
+      return result;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
 }
 
 module.exports = room;

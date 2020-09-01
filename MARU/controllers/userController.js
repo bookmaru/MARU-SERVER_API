@@ -201,5 +201,24 @@ module.exports = {
         roomLeaderIdx : userIdx,
         rating : rating
       }));
-}
+  },
+
+/*
+* 나의 모임
+* param token
+* return thumbnail, title, authors, info (최근 채팅 수)
+*/
+
+  myRoom: async (req, res) => {
+    const userIdx = req.userIdx;
+
+    if (!userIdx) {
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
+      return;
+    }
+
+    const myRoomList = await userModel.myRoomList(userIdx);
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_MY_ROOM_LIST, myRoomList));
+  }
 }
