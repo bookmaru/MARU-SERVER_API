@@ -142,7 +142,7 @@ const room = {
       // 해당 roomIdx, 퀴즈 합격여부 (true, false)
       const {roomIdx, isCheck} = req.body;
 
-      if (!roomIdx || !isCheck) {
+      if (!roomIdx || isCheck === undefined) {
         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
         return;
       }

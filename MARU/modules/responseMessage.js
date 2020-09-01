@@ -36,5 +36,7 @@ module.exports = {
     READ_ROOM_SUCCESS: "토론방 소개 조회 성공",
     //퀴즈 맞추기
     READ_QUIZ_SUCCESS: "퀴즈와 정답 불러오기 성공",
-    NO_ROOM: "해당하는 토론방이 없습니다."
+    NO_ROOM: "해당하는 토론방이 없습니다.",
+    SUCCESS_QUIZ_SOLVED: "퀴즈 합격입니다",
+    FAIL_QUIZ_SOLVED: "퀴즈 불합격입니다",
 };
