@@ -61,19 +61,17 @@ const room = {
 
     try {
       const CheckLimitMakeRoom = await roomModel.limitMakeRoom(userIdx);
+      // 방을 만들 수 있을 때
+      if (CheckLimitMakeRoom) {
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_MAKE_ROOM));
+        return;
+      }
+      // 방장 제한 
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NOT_POSSIBLE_MAKE_ROOM));
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
       return;
     }
-
-    // 방을 만들 수 있을 때
-    if (CheckLimitMakeRoom) {
-      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_MAKE_ROOM));
-      return;
-    }
-
-    // 방장 제한 
-    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NOT_POSSIBLE_MAKE_ROOM));
   },
 
   /** 
