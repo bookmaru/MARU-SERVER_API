@@ -18,10 +18,11 @@ const chat = {
 },
 
 //db에서 내용 가져오기
-  getChat: async (userIdx, msg, chatTime, roomIdx) => {
-    const query = `SELECT user.nickName, chat.msg, chat.chatTime FROM ${table} join user on chat.userIdx = user.userIdx WHERE roomIdx = ${roomIdx}`;
+  getChat: async (roomIdx) => {
+    const query = `SELECT * FROM ${table} WHERE roomIdx = ${roomIdx}`;
     try {
-      const result = await pool.queryParam(query);
+      const result = await pool.queryParamArr(query);
+      console.log(result)
       return result;
     } catch (err) {
       console.log(err);
