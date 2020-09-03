@@ -165,6 +165,39 @@ const room = {
       return;
     }
 
+      
+    },
+  mainRoom: async (req, res) => { 
+    const roomIdx = req.params.roomIdx;
+    
+    if (!roomIdx) {
+        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+        return;
+    }
+    
+    const idx = await roomModel.mainRoom(roomIdx);
+    return res.status(statusCode.OK)
+        .send(util.success(statusCode.OK, resMessage.READ_ROOM_SUCCESS, idx));
+  }, 
+  
+  quizRoom: async (req, res) => {
+     const roomIdx = req.params.roomIdx;
+    
+     if (!roomIdx) {
+         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+         return;
+     }
+     const userIdx = req.userIdx;
+    
+     if (!userIdx) {
+         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
+         return;
+     }
+     const result = await roomModel.quizRoom(userIdx,roomIdx);
+     if (result.length === 0) {
+         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.NO_ROOM));
+     }
+
     // false 라면 failQuize 테이블 insert
     try {
       const failQuiz = await roomModel.quizFail(userIdx, roomIdx);
