@@ -10,11 +10,6 @@ const server = http.createServer(app)
 const socket = require('socket.io')
 const fs = require('fs')
 const io = socket.listen(server)
-const chatController = require('./controllers/chatController');
-const util = require('./modules/util');
-const statusCode = require('./modules/statusCode');
-const resMessage = require('./modules/responseMessage');
-const chatModel = require('./models/chat');
 const moment = require('moment');
 const pool = require('./modules/pool');
 
@@ -30,8 +25,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 const chat = require('./routes/chat');
 app.use('/chat/:roomIdx', chat);
 app.use('/', indexRouter);
-app.use('/css', express.static('./static/css'))
-app.use('/js', express.static('./static/js'))
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -48,11 +41,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// server.listen(app.get('port'), function(){
-
-//   console.log("Express server listening on port " + app.get('port'));
-
-// });
 server.listen(8080, function(){
 
   console.log("Express server listening on port " + 8080);
@@ -87,17 +75,16 @@ io.on('connection', (socket) => {
   // });
 
 
-  socket.on('joinRoom', (userIdx) => {
+  socket.on('joinRoom', (name) => {
     socket.join(room, () => {
-      console.log(userIdx + ' join a ' + room);
+      console.log(name + ' join a ' + room);
       //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
-      io.to(room).emit('joinRoom', userIdx);
+      io.to(room).emit('joinRoom', name);
     });
   });
 
 
   socket.on('chat message', (name, msg, roomIdx) => {
-    //const userIdx = req.userIdx;
     var date=new Date();
     let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
     console.log(name, msg, chatTime, roomIdx)
