@@ -40,4 +40,7 @@ module.exports = {
     NO_ROOM: "해당하는 토론방이 없습니다.",
     SUCCESS_QUIZ_SOLVED: "퀴즈 합격입니다",
     FAIL_QUIZ_SOLVED: "퀴즈 불합격입니다",
+
+    //채팅
+    SEND_CHAT_SUCCESS: "DB에 채팅내용 넣기 성공",
 };

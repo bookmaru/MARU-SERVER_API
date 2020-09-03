@@ -10,6 +10,13 @@ const server = http.createServer(app)
 const socket = require('socket.io')
 const fs = require('fs')
 const io = socket.listen(server)
+const chatController = require('./controllers/chatController');
+const util = require('./modules/util');
+const statusCode = require('./modules/statusCode');
+const resMessage = require('./modules/responseMessage');
+const chatModel = require('./models/chat');
+const moment = require('moment');
+const pool = require('./modules/pool');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -66,13 +73,11 @@ app.get('/', function(request, response) {
   })
 })
 let room='room';
-let a = 0;
 
 io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-
 
   // socket.on('leaveRoom', (num, name) => {
   //   socket.leave(room[num], () => {
@@ -82,16 +87,27 @@ io.on('connection', (socket) => {
   // });
 
 
-  socket.on('joinRoom', (name) => {
+  socket.on('joinRoom', (userIdx) => {
     socket.join(room, () => {
-      console.log(name + ' join a ' + room);
+      console.log(userIdx + ' join a ' + room);
       //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
-      io.to(room).emit('joinRoom', name);
+      io.to(room).emit('joinRoom', userIdx);
     });
   });
 
 
-  socket.on('chat message', (name, msg) => {
+  socket.on('chat message', (name, msg, roomIdx) => {
+    //const userIdx = req.userIdx;
+    var date=new Date();
+    let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
+    console.log(name, msg, chatTime, roomIdx)
+    const fileds = 'nickName, msg, chatTime, roomIdx';
+    const questions = `?, ?, ?, ?`;
+    const values = [name, msg, chatTime, roomIdx];
+    const query = `INSERT INTO chat(${fileds}) VALUES(${questions})`; 
+    const  result = pool.queryParamArr(query,values)
+    console.log(result)
+    
     io.to(room).emit('chat message', name, msg);
   });
 

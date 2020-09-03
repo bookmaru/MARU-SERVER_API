@@ -58,9 +58,10 @@
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
   $(() => {
-    const name = prompt('What your name');
+    const name = prompt('What your name'); //이것도 nickName보내주세여 채팅에서의 변수명은 name
     const socket = io();
-    socket.emit('joinRoom', name,);
+    const roomIdx = 5; //이거 내가 임의로 지정해놓은건데 방번호 보내주세여
+    socket.emit('joinRoom', name);
 
     $('select').change(() => {
       //socket.emit('leaveRoom', num, name);
@@ -69,12 +70,12 @@
     });
 
     $('form').submit(() => {
-      socket.emit('chat message', name, $('#m').val());
+      socket.emit('chat message', name, $('#m').val(), roomIdx);
       $('#m').val('');
       return false;
     });
 
-    socket.on('chat message', (name, msg) => {
+    socket.on('chat message', (name, msg, roomIdx) => {
       $('#messages').append($('<li>').text(name + '  :  ' +
         msg));
     });
