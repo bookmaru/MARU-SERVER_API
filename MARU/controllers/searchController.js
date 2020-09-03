@@ -4,7 +4,10 @@ const resMessage = require('../modules/responseMessage');
 const request = require('request');
 const kakaoOptions = require('../config/kakao');
 const searchModel = require('../models/search');
-const qs = require('querystring');
+const user = require('../models/user');
+const jwt = require('../modules/jwt');
+const TOKEN_EXPIRED = -3;
+const TOKEN_INVALID = -2;;
 
 const search = {
 
@@ -67,10 +70,45 @@ const search = {
       return;
     }
 
-    const roomResult = await searchModel.searchRoom(title);
-    
-    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, roomResult));
-    
+    const token = req.headers.token;
+
+    // 비회원 유저
+    if (!token) {
+      try {
+        const result = await searchModel.NotLoginUserSearch(title);
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, result));
+        return;
+      } catch (err) {
+        console.log(err);
+        res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
+        return;
+      }
+    }
+;
+    const user = await jwt.verify(token);
+
+    if (user === TOKEN_EXPIRED) {
+        return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, resMessage.EXPIRED_TOKEN));
+    }
+
+    if (user === TOKEN_INVALID) {
+        return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, resMessage.INVALID_TOKEN));
+    }
+
+    if (user.idx === undefined) {
+        return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, resMessage.INVALID_TOKEN));
+    }
+
+    // 로그인 유저 검색
+    try {
+      const roomResult = await searchModel.searchRoom(title, user.idx);
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, roomResult));
+      return;
+    } catch (err) {
+      console.log(err);
+      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
+      return;
+    }
   }
 }
 
