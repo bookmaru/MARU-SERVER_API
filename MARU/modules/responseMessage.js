@@ -24,6 +24,7 @@ module.exports = {
     // 검색
     SUCCESS_USER : "유저를 검색 성공했습니다",
     NO_SEARCH : "검색한 결과가 존재하지 않습니다",
+    SUCCESS_SEARCH : "검색을 성공했습니다",
 
     // 토론방
     MAKE_ROOM_SUCCESS : "토론방 만들기 성공입니다",
