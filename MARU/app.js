@@ -42,13 +42,11 @@ app.use(function(err, req, res, next) {
 });
 
 server.listen(8080, function(){
-
   console.log("Express server listening on port " + 8080);
-
 });
 
 
-/* Get 방식으로 / 경로에 접속하면 실행 됨 */
+/* GET 방식으로 / 경로에 접속하면 실행 됨 */
 app.get('/', function(request, response) {
   fs.readFile('./index.ejs', function(err, data) {
     if(err) {
@@ -60,7 +58,8 @@ app.get('/', function(request, response) {
     }
   })
 })
-let room='room';
+
+let room = 'room';
 
 io.on('connection', (socket) => {
   socket.on('disconnect', () => {
@@ -85,20 +84,19 @@ io.on('connection', (socket) => {
 
 
   socket.on('chat message', (name, msg, roomIdx) => {
-    console.log(typeof msg);
-    var date=new Date();
+    var date = new Date();
     let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
+
     console.log(name, msg, chatTime, roomIdx)
+
     const fileds = 'nickName, msg, chatTime, roomIdx';
     const questions = `?, ?, ?, ?`;
     const values = [name, msg, chatTime, roomIdx];
     const query = `INSERT INTO chat(${fileds}) VALUES(${questions})`; 
-    const  result = pool.queryParamArr(query,values)
-    console.log(result)
+    const result = pool.queryParamArr(query,values);
     
     io.to(room).emit('chat message', name, msg);
   });
-
 
 });
 
