@@ -62,10 +62,10 @@ const room = {
   },
   mainRoom: async (roomIdx) => {
     const query = `SELECT r.thumbnail, r.title, r.authors, r.createdAt, r.info, u.nickName,
-    round((u.rating/u.count),1) as avgRating, 
-    (SELECT COUNT(chat.userIdx) - 1 FROM chat WHERE chat.roomIdx = "${roomIdx}") as peopleCount
-    FROM room r JOIN user u ON (r.userIdx = u.userIdx)
-    WHERE r.roomIdx = "${roomIdx}"`;
+                  round((u.rating / u.count), 1) as avgRating, 
+                  (SELECT COUNT(chat.nickName) - 1 FROM chat WHERE chat.roomIdx = "${roomIdx}") as peopleCount
+                  FROM room r JOIN user u ON (r.userIdx = u.userIdx)
+                   WHERE r.roomIdx = "${roomIdx}"`;
     try {
         const result = await pool.queryParamArr(query);
         return result;
