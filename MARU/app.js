@@ -60,7 +60,11 @@ app.get('/', function(request, response) {
     }
   })
 })
-let room='room';
+//let room='room';
+let room = [];
+for (i=1; i<500; i++){
+  room.push('room'+i)
+}
 
 io.on('connection', (socket) => {
   socket.on('disconnect', () => {
@@ -75,11 +79,11 @@ io.on('connection', (socket) => {
   // });
 
 
-  socket.on('joinRoom', (name) => {
-    socket.join(room, () => {
-      console.log(name + ' join a ' + room);
+  socket.on('joinRoom', (name, roomIdx) => {
+    socket.join(room[roomIdx], () => {
+      console.log(name + ' join a ' + room[roomIdx]);
       //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
-      io.to(room).emit('joinRoom', name);
+      io.to(room[roomIdx]).emit('joinRoom', name);
     });
   });
 
@@ -95,8 +99,7 @@ io.on('connection', (socket) => {
     const query = `INSERT INTO chat(${fileds}) VALUES(${questions})`; 
     const  result = pool.queryParamArr(query,values)
     console.log(result)
-    
-    io.to(room).emit('chat message', name, msg);
+    io.to(room[roomIdx]).emit('chat message', name, msg);
   });
 
 

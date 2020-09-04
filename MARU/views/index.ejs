@@ -61,13 +61,13 @@
     const name = prompt('What your name'); //이것도 nickName보내주세여 채팅에서의 변수명은 name
     const socket = io();
     const roomIdx = 5; //이거 내가 임의로 지정해놓은건데 방번호 보내주세여
-    socket.emit('joinRoom', name);
+    socket.emit('joinRoom', name, roomIdx);
 
-    $('select').change(() => {
-      //socket.emit('leaveRoom', num, name);
-      socket.emit('joinRoom', name);
+    // $('select').change(() => {
+    //   //socket.emit('leaveRoom', num, name);
+    //   socket.emit('joinRoom', name);
 
-    });
+    // });
 
     $('form').submit(() => {
       socket.emit('chat message', name, $('#m').val(), roomIdx);
