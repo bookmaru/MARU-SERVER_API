@@ -5,7 +5,7 @@ const main = {
   // 모임이 많은 책
   ManyRoom: async () => {
     const query = `SELECT thumbnail, title, authors, count(title) as roomCount from room GROUP BY title ORDER BY roomCount DESC LIMIT 0, 10`; 
-    try {
+    try {d
       const result = await pool.queryParam(query);
       return result;
     } catch (err) {

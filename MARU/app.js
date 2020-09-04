@@ -85,6 +85,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('chat message', (name, msg, roomIdx) => {
+    console.log(typeof msg);
     var date=new Date();
     let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
     console.log(name, msg, chatTime, roomIdx)
