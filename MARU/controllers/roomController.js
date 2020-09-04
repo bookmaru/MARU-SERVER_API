@@ -2,7 +2,6 @@ const util = require('../modules/util');
 const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const roomModel = require('../models/room');
-const { catch } = require('../config/database');
 
 const room = {
 
