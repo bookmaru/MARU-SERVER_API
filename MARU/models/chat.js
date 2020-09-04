@@ -22,10 +22,10 @@ const chat = {
     const query = `SELECT * FROM ${table} WHERE roomIdx = ${roomIdx}`;
     try {
       const result = await pool.queryParamArr(query);
-      console.log(result)
       return result;
     } catch (err) {
       console.log(err);
+      throw err;
     }
 },
 
