@@ -69,7 +69,7 @@ const room = {
     try {
         const result = await pool.queryParamArr(query);
         return result;
-    } catch (err) {ㅇ
+    } catch (err) {
         if (err.errno == 1062) {
             console.log('duplicate ERROR : ', err.errno, err.code);
             throw err;
