@@ -2,6 +2,8 @@ const util = require('../modules/util');
 const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const roomModel = require('../models/room');
+const moment = require('moment');
+require('moment-timezone');
 
 const room = {
 
@@ -18,12 +20,15 @@ const room = {
       return;
     }
 
-    const { thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt } = req.body;
+    const { thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5} = req.body;
 
-    if (!thumbnail || !authors || !title || !info || !quiz1 || !quiz2 || !quiz3 || !quiz4 || !quiz5 || !answer1 || !answer2 || !answer3 || !answer4 || !answer5 || !createdAt) {
+    if (!thumbnail || !authors || !title || !info || !quiz1 || !quiz2 || !quiz3 || !quiz4 || !quiz5 || !answer1 || !answer2 || !answer3 || !answer4 || !answer5) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
     }
+
+    moment.tz.setDefault("Asia/Seoul");
+    const createdAt = moment().format('YYYY-MM-DD HH:mm:ss')
 
     try {
       const roomMake = await roomModel.make(thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx);
@@ -68,6 +73,7 @@ const room = {
       }
       // 방장 제한 
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NOT_POSSIBLE_MAKE_ROOM));
+      return;
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
       return;
@@ -102,7 +108,7 @@ const room = {
 
   mainRoom: async (req, res) => {
     const roomIdx = req.params.roomIdx;
-    
+
     if (!roomIdx) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
@@ -110,8 +116,8 @@ const room = {
     
     try {
       const idx = await roomModel.mainRoom(roomIdx);
-      return res.status(statusCode.OK)
-      .send(util.success(statusCode.OK, resMessage.READ_ROOM_SUCCESS, idx));
+      return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_ROOM_SUCCESS, idx));
+   
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
     }
@@ -170,22 +176,8 @@ const room = {
 
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_QUIZ_SOLVED));
       return;
-    }
-
-      
-    },
-  mainRoom: async (req, res) => { 
-    const roomIdx = req.params.roomIdx;
-    
-    if (!roomIdx) {
-        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
-        return;
-    }
-    
-    const idx = await roomModel.mainRoom(roomIdx);
-    return res.status(statusCode.OK)
-        .send(util.success(statusCode.OK, resMessage.READ_ROOM_SUCCESS, idx));
-  }, 
+    }    
+  },
   
   quizRoom: async (req, res) => {
      const roomIdx = req.params.roomIdx;
@@ -214,7 +206,8 @@ const room = {
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.FAIL_QUIZ_SOLVED));
-  }
+  },
+
 }
 
 module.exports = room;
