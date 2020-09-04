@@ -15,8 +15,8 @@ const user = {
     if (err.errno == 1062) {
       console.log('signup ERROR : ', err.errno, err.code);
       throw err;
-      }   
-    }
+    }   
+  }
   },
   profile : async (userIdx) => {
     const query = `SELECT nickName, round((rating/count),1) as avgRating FROM ${table} WHERE userIdx="${userIdx}"`;
