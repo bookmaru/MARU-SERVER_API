@@ -129,6 +129,20 @@ quizRoom: async (roomIdx) => {
       throw err;
     }
   },
+<<<<<<< HEAD
+=======
+  getRoomCount: async () => {
+    const query = `SELECT count(*) as count FROM ${table}`;
+    try {
+      const result = await pool.queryParam(query);
+      console.log(result)
+      console.log(result[0].count)
+      return result[0].count;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+>>>>>>> feature_hw
 }
 
 module.exports = room;

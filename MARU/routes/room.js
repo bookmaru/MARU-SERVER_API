@@ -9,6 +9,7 @@ router.get('/limitJoin', middleware.userJwt, roomController.limitJoin);
 router.get('/roomInfo/:roomIdx', roomController.mainRoom);
 router.get('/roomQuiz/:roomIdx', roomController.quizRoom);
 router.post('/checkQuiz', middleware.userJwt, roomController.checkQuiz);
+router.get('/count', roomController.getRoomCount);
 
 
 module.exports = router
