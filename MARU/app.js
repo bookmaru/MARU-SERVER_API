@@ -14,13 +14,14 @@ const moment = require('moment');
 const pool = require('./modules/pool');
 const chat = require('./routes/chat');
 const mysql = require('mysql');
+const configDB = require('./config/database2');
 
 const connection = mysql.createConnection({
-  host: 'db-sopt-server.czhouys7o6pe.ap-northeast-2.rds.amazonaws.com',
-  port: 3306,
-  user: 'admin',
-  password: 'cxz272203',
-  database: 'MARU'
+  host: configDB.host,
+  port: configDB.port,
+  user: configDB.user,
+  password: configDB.password,
+  database: configDB.database
 })
 
 // view engine setup
@@ -79,14 +80,14 @@ connection.query('SELECT count(*) as count FROM room', function (error, results,
     if (error) {
         console.log(error);
     }
-    console.log(results[0].count);
+    //console.log(results[0].count);
     const getRoomCount = results[0].count;
     let room = [];
-    for (i=1; i<=getRoomCount; i++){
-      room.push('room'+i)
+    for (i = 1; i <= getRoomCount; i++){
+      room.push('room' + i)
     }
     console.log(room)
-    let a =0 ;
+    let a = 0 ;
 
 
     io.on('connection', (socket) => {
@@ -127,17 +128,17 @@ connection.query('SELECT count(*) as count FROM room', function (error, results,
 
       socket.on('chat message', (name, msg, roomIdx) => {
         a=roomIdx;
-        var date=new Date();
+        var date = new Date(); 
         let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
 
         console.log(name, msg, chatTime, roomIdx+1)
 
         const fileds = 'nickName, msg, chatTime, roomIdx';
         const questions = `?, ?, ?, ?`;
-        const values = [name, msg, chatTime, roomIdx+1];
+        const values = [name, msg, chatTime, roomIdx + 1];
         const query = `INSERT INTO chat(${fileds}) VALUES(${questions})`; 
 
-        const  result = pool.queryParamArr(query,values)
+        const result = pool.queryParamArr(query,values)
         console.log(result)
         io.to(room[a]).emit('chat message', name, msg);
       });
