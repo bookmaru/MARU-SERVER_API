@@ -64,8 +64,8 @@ app.get('/', function(request, response) {
 
 //let room='room';
 let room = [];
-for (i=1; i<500; i++){
-  room.push('room'+i)
+for (i = 1; i < 500; i++){
+  room.push('room' + i)
 }
 
 
