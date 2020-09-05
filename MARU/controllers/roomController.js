@@ -207,7 +207,15 @@ const room = {
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.FAIL_QUIZ_SOLVED));
-  }
+  },
+
+  getRoomCount: async (req, res) => {
+    const getRoomCount = await roomModel.getRoomCount();
+    if (getRoomCount) {
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_ROOM_COUNT, {getRoomCount}));
+      return;
+    }
+  },
 }
 
 module.exports = room;

@@ -24,6 +24,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 const chat = require('./routes/chat');
 app.use('/chat/:roomIdx', chat);
+//*************************** */
+// app.use('/chat/:roomIdx', chat, async (req, res) => {
+//   const getRoomCount = await roomModel.getRoomCount();
+// console.log(getRoomCount)
+
+// //콘솔이 안찍히는거보니 실행안되는거같음
+// });
 app.use('/', indexRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -60,35 +67,40 @@ app.get('/', function(request, response) {
     }
   })
 })
-//let room='room';
-let room = [];
-for (i=1; i<500; i++){
+
+let room = ['room1', 'room2'];
+for (i=3; i<5; i++){
   room.push('room'+i)
 }
+//근데 이거를 for (i=3; i<getRoomCount; i++){ 로 해주고싶음
+let a =0 ;
 
 io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
 
-  // socket.on('leaveRoom', (num, name) => {
-  //   socket.leave(room[num], () => {
-  //     console.log(name + ' leave a ' + room[num]);
-  //     io.to(room[num]).emit('leaveRoom', num, name);
-  //   });
-  // });
+  socket.on('leaveRoom', (roomIdx, name) => {
+    socket.leave(room[roomIdx], () => {
+      console.log(name + ' leave a ' + room[roomIdx]);
+      io.to(room[roomIdx]).emit('leaveRoom', roomIdx, name);
+    });
+  });
 
 
-  socket.on('joinRoom', (name, roomIdx) => {
+  socket.on('joinRoom', (roomIdx, name) => {
     socket.join(room[roomIdx], () => {
+      room.push('room'+roomIdx);
+      console.log(room)
       console.log(name + ' join a ' + room[roomIdx]);
       //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
-      io.to(room[roomIdx]).emit('joinRoom', name);
+      io.to(room[roomIdx]).emit('joinRoom', roomIdx,name);
     });
   });
 
 
   socket.on('chat message', (name, msg, roomIdx) => {
+    a=roomIdx;
     var date=new Date();
     let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
     console.log(name, msg, chatTime, roomIdx)
@@ -98,7 +110,7 @@ io.on('connection', (socket) => {
     const query = `INSERT INTO chat(${fileds}) VALUES(${questions})`; 
     const  result = pool.queryParamArr(query,values)
     console.log(result)
-    io.to(room[roomIdx]).emit('chat message', name, msg);
+    io.to(room[a]).emit('chat message', name, msg);
   });
 
 
