@@ -3,7 +3,6 @@ const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const roomModel = require('../models/room');
 const moment = require('moment');
-const { catch, return, return } = require('../config/database');
 require('moment-timezone');
 
 const room = {
@@ -179,7 +178,7 @@ const room = {
      
      try {
       const result = await roomModel.quizRoom(userIdx, roomIdx);
-      
+
       if (result.length === 0) {
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.NO_ROOM));
         return;
