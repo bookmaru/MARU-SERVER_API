@@ -20,6 +20,7 @@ module.exports = {
     LOGIN_SUCCESS : "로그인 성공했습니다",
     SUCCESS_LOGOUT : "로그아웃 되었습니다.",
     WITHDRAWAL_SUCCESS : "회원탈퇴 되었습니다.",
+    REPORT_SUCCESS : "신고하기 성공입니다",
 
     // 검색
     SUCCESS_USER : "유저를 검색 성공했습니다",
