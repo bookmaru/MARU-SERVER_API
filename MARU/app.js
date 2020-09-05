@@ -34,13 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/chat/:roomIdx', chat);
-//*************************** */
-// app.use('/chat/:roomIdx', chat, async (req, res) => {
-//   const getRoomCount = await roomModel.getRoomCount();
-// console.log(getRoomCount)
 
-// //콘솔이 안찍히는거보니 실행안되는거같음
-// });
 app.use('/', indexRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -109,8 +103,9 @@ connection.query('SELECT count(*) as count FROM room', function (error, results,
         const fileds = 'disconnectTime';
         const questions = `?`;
         const values = [disconnectTime];
-        const query = `UPDATE participant SET ${fileds} = ${questions} WHERE userIdx = (select userIdx from user where nickName = ${name}) and roomIdx=${roomIdx}`; 
+        const query = `UPDATE participant SET ${fileds} = ${questions} WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx=${roomIdx}`; 
         const  result = pool.queryParamArr(query,values)
+        console.log(query)
         console.log(result)
       });
 
