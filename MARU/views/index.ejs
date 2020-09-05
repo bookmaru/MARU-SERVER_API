@@ -76,7 +76,7 @@
       // socket.emit('chat message', name, $('#m').val(), roomIdx);
       // $('#m').val('');
       // return false;
-      socket.emit('leave', name);
+      socket.emit('leave', name, roomIdx);
     });
 
     socket.on('chat message', (name, msg, roomIdx) => {
