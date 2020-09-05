@@ -12,6 +12,7 @@ const fs = require('fs')
 const io = socket.listen(server)
 const moment = require('moment');
 const pool = require('./modules/pool');
+const chat = require('./routes/chat');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,7 +23,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-const chat = require('./routes/chat');
 app.use('/chat/:roomIdx', chat);
 //*************************** */
 // app.use('/chat/:roomIdx', chat, async (req, res) => {
@@ -49,13 +49,11 @@ app.use(function(err, req, res, next) {
 });
 
 server.listen(8080, function(){
-
   console.log("Express server listening on port " + 8080);
-
 });
 
 
-/* Get 방식으로 / 경로에 접속하면 실행 됨 */
+/* GET 방식으로 / 경로에 접속하면 실행 됨 */
 app.get('/', function(request, response) {
   fs.readFile('./index.ejs', function(err, data) {
     if(err) {
@@ -74,6 +72,7 @@ for (i=3; i<5; i++){
 }
 //근데 이거를 for (i=3; i<getRoomCount; i++){ 로 해주고싶음
 let a =0 ;
+
 
 io.on('connection', (socket) => {
   socket.on('disconnect', () => {
@@ -103,17 +102,20 @@ io.on('connection', (socket) => {
     a=roomIdx;
     var date=new Date();
     let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
+
     console.log(name, msg, chatTime, roomIdx)
+
     const fileds = 'nickName, msg, chatTime, roomIdx';
     const questions = `?, ?, ?, ?`;
     const values = [name, msg, chatTime, roomIdx];
     const query = `INSERT INTO chat(${fileds}) VALUES(${questions})`; 
+
     const  result = pool.queryParamArr(query,values)
     console.log(result)
     io.to(room[a]).emit('chat message', name, msg);
   });
 
+  });
 
-});
 
 module.exports = app;

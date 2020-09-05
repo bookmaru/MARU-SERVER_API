@@ -10,7 +10,7 @@ const main = {
      * @param 
      * @return thumbnail, title, authors, info, nickName
      */
-  mainView1: async (req, res) => {
+  mainView1: async (req, res) => {   
     // 방의 개수가 많은 순서대로
     try {
       const popularViewList = await mainModel.ManyRoom();
