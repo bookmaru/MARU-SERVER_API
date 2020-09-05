@@ -117,7 +117,24 @@ const user = {
     } catch (err) {
       console.log(err);
     }
+  }, 
+
+  report: async (reporterIdx, reportMsg, reportTargetIdx) => {
+    const fields = 'reporterIdx, reportMsg, reportTargetIdx';
+    const questions = `?,?,?`;
+    const values = [reporterIdx, reportMsg, reportTargetIdx];
+    const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`;
+    try {
+      const result = await pool.queryParamArr(query, values);
+      const insertId = result.insertId;
+      return insertId;
+    } catch(err) {
+    if (err.errno == 1062) {
+      console.log('report ERROR : ', err.errno, err.code);
+      throw err;
+    }   
   }
+}
 }
 
 module.exports = user;

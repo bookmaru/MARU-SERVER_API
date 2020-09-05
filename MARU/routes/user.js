@@ -11,5 +11,6 @@ router.post('/rating', userController.rating); //방장 별점 평가
 router.get('/profile', middleware.userJwt, userController.profile); //내 프로필 조회
 router.post('/withdrawal', middleware.userJwt, userController.withdrawal); //회원탈퇴
 router.get('/myRoom', middleware.userJwt, userController.myRoom) // 나의 모임
+router.post('/report',middleware.userJwt,userController.report ); // 신고하기
 
 module.exports = router; 
