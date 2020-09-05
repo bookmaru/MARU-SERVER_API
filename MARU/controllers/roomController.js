@@ -3,7 +3,6 @@ const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const roomModel = require('../models/room');
 const moment = require('moment');
-require('moment-timezone');
 
 const room = {
 
@@ -117,7 +116,7 @@ const room = {
     try {
       const idx = await roomModel.mainRoom(roomIdx);
       return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_ROOM_SUCCESS, idx));
-   
+  
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
     }
@@ -163,42 +162,34 @@ const room = {
   },
   
   quizRoom: async (req, res) => {
-     const roomIdx = req.params.roomIdx;
+    const roomIdx = req.params.roomIdx;
     
-     if (!roomIdx) {
+    if (!roomIdx) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
-     }
-     const userIdx = req.userIdx;
-    
-     if (!userIdx) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
-      return;
-     }
-     
-     try {
-      const result = await roomModel.quizRoom(userIdx, roomIdx);
-
+    }
+    try {
+      const result = await roomModel.quizRoom(roomIdx);
       if (result.length === 0) {
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.NO_ROOM));
         return;
       }
-     } catch (err) {
-       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
-       return;
-     }
-
-    // false 라면 failQuize 테이블 insert
-    try {
-      const failQuiz = await roomModel.quizFail(userIdx, roomIdx);
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_ROOM_SUCCESS, result));
     } catch (err) {
-      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
       return;
     }
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.FAIL_QUIZ_SOLVED));
   },
 
+  getRoomCount: async (req, res) => {
+    const getRoomCount = await roomModel.getRoomCount();
+    if (getRoomCount) {
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_ROOM_COUNT, {getRoomCount}));
+      return;
+    }
+  },
 }
 
 module.exports = room;

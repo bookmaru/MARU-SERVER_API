@@ -43,4 +43,5 @@ module.exports = {
 
     //채팅
     SEND_CHAT_SUCCESS: "DB에 채팅내용 넣기 성공",
+    SUCCESS_GET_ROOM_COUNT: "채팅방 개수 가져오기 성공"
 };
