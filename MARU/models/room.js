@@ -80,7 +80,7 @@ const room = {
 },
 quizRoom: async (userIdx, roomIdx) => {
     const query = `SELECT room.quiz1, room.quiz2, room.quiz3, room.quiz4, room.quiz5, room.answer1, room.answer2, room.answer3, room.answer4, room.answer5 
-    FROM room WHERE room.userIdx = "${userIdx}" AND room.roomIdx = "${roomIdx}"`;
+                  FROM room WHERE room.userIdx = "${userIdx}" AND room.roomIdx = "${roomIdx}"`;
     try {
         const result = await pool.queryParam(query);
         return result;

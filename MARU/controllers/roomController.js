@@ -124,23 +124,6 @@ const room = {
 
   },
 
-  quizRoom: async (req, res) => {
-    const roomIdx = req.params.roomIdx;
-    if (!roomIdx) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
-      return;
-    }
-    const userIdx = req.userIdx;
-    if (!userIdx) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
-      return;
-    }
-    const result = await roomModel.quizRoom(userIdx, roomIdx);
-    if (result.length === 0) {
-      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.NO_ROOM));
-    }
-  },
-
 
   /** 
   * @summary 토론방 퀴즈 합격 여부
@@ -183,18 +166,26 @@ const room = {
      const roomIdx = req.params.roomIdx;
     
      if (!roomIdx) {
-         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
-         return;
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+      return;
      }
      const userIdx = req.userIdx;
     
      if (!userIdx) {
-         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
-         return;
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
+      return;
      }
-     const result = await roomModel.quizRoom(userIdx,roomIdx);
-     if (result.length === 0) {
-         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.NO_ROOM));
+     
+     try {
+      const result = await roomModel.quizRoom(userIdx, roomIdx);
+
+      if (result.length === 0) {
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.NO_ROOM));
+        return;
+      }
+     } catch (err) {
+       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
+       return;
      }
 
     // false 라면 failQuize 테이블 insert
