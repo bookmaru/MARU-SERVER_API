@@ -129,8 +129,6 @@ quizRoom: async (roomIdx) => {
       throw err;
     }
   },
-<<<<<<< HEAD
-=======
   getRoomCount: async () => {
     const query = `SELECT count(*) as count FROM ${table}`;
     try {
@@ -142,7 +140,6 @@ quizRoom: async (roomIdx) => {
       console.log(err);
     }
   },
->>>>>>> feature_hw
 }
 
 module.exports = room;
