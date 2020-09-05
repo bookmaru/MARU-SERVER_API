@@ -102,6 +102,18 @@ connection.query('SELECT count(*) as count FROM room', function (error, results,
         });
       });
 
+      socket.on('leave', (name, roomIdx) => {
+        var date=new Date();
+        let disconnectTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
+
+        const fileds = 'disconnectTime';
+        const questions = `?`;
+        const values = [disconnectTime];
+        const query = `UPDATE participant SET ${fileds} = ${questions} WHERE userIdx = (select userIdx from user where nickName = ${name}) and roomIdx=${roomIdx}`; 
+        const  result = pool.queryParamArr(query,values)
+        console.log(result)
+      });
+
 
       socket.on('joinRoom', (roomIdx, name) => {
         socket.join(room[roomIdx], () => {
