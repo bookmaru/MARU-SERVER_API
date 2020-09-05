@@ -49,6 +49,10 @@
   </style>
 </head>
 <body>
+  <select>
+    <option value="Room1">Room1</option>
+    <option value="Room2">Room2</option>
+  </select>
 <ul id="messages"></ul>
 <form action="">
   <input id="m" autocomplete="off"/>
@@ -60,14 +64,17 @@
   $(() => {
     const name = prompt('What your name'); //이것도 nickName보내주세여 채팅에서의 변수명은 name
     const socket = io();
-    const roomIdx = 5; //이거 내가 임의로 지정해놓은건데 방번호 보내주세여
-    socket.emit('joinRoom', name, roomIdx);
+    let room = ['room1', 'room2']; //room을 미리 갯수에 맞게 리스트를 만들어놔야함 /room/count api 사용
+    const roomIdx = 0; //room[roomIdx]로 사용하는 배열이니 0부터 시작해야함
+    socket.emit('joinRoom', roomIdx, name);
 
-    // $('select').change(() => {
-    //   //socket.emit('leaveRoom', num, name);
-    //   socket.emit('joinRoom', name);
+    $('select').change(() => {
+      socket.emit('leaveRoom', roomIdx, name);
+      roomIdx++;
+      roomIdx = roomIdx % 2;
+      socket.emit('joinRoom',roomIdx, name);
 
-    // });
+    });
 
     $('form').submit(() => {
       socket.emit('chat message', name, $('#m').val(), roomIdx);
@@ -80,12 +87,12 @@
         msg));
     });
 
-    // socket.on('leaveRoom', (num, name) => {
-    //   $('#messages').append($('<li>').text(name + '    leaved '
-    //     + room[num] + ' :('));
-    // });
-    socket.on('joinRoom', (name) => {
-      $('#messages').append($('<li>').text(name + '    님이 참여했습니다. '));
+    socket.on('leaveRoom', (roomIdx, name) => {
+      $('#messages').append($('<li>').text(name + '    leaved '
+        + room[roomIdx] + ' :('));
+    });
+    socket.on('joinRoom', (roomIdx,name) => {
+      $('#messages').append($('<li>').text(room[roomIdx]+'에 ' + name + '    님이 참여했습니다. '));
         
     });
   });

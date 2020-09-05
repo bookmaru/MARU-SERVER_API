@@ -179,7 +179,17 @@ const room = {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
       return;
     }
-  }
+
+    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.FAIL_QUIZ_SOLVED));
+  },
+
+  getRoomCount: async (req, res) => {
+    const getRoomCount = await roomModel.getRoomCount();
+    if (getRoomCount) {
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_ROOM_COUNT, {getRoomCount}));
+      return;
+    }
+  },
 }
 
 module.exports = room;

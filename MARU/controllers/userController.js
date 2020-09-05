@@ -241,7 +241,7 @@ module.exports = {
     return;
     }
 
-    const report = await userModel.report(reportMsg, reportTargetIdx);
+    const report = await userModel.report(reporterIdx, reportMsg, reportTargetIdx);
     res.status(statusCode.OK)
     .send(util.success(statusCode.OK, resMessage.REPORT_SUCCESS, report));
 
