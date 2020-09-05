@@ -22,6 +22,7 @@ module.exports = {
     WITHDRAWAL_SUCCESS : "회원탈퇴 되었습니다.",
     EXPIRED_TOKEN : "토큰이 만료되었습니다",
     INVALID_TOKEN : "토큰이 잘못되었습니다",
+    
 
     // 검색
     SUCCESS_USER : "유저를 검색 성공했습니다",
