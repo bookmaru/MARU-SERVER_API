@@ -97,10 +97,10 @@ io.on('connection', (socket) => {
 
     console.log(name, msg, chatTime, roomIdx)
 
-    const fileds = 'nickName, msg, chatTime, roomIdx';
+    const fields = 'nickName, msg, chatTime, roomIdx';
     const questions = `?, ?, ?, ?`;
     const values = [name, msg, chatTime, roomIdx];
-    const query = `INSERT INTO chat(${fileds}) VALUES(${questions})`; 
+    const query = `INSERT INTO chat(${fields}) VALUES(${questions})`; 
 
     const  result = pool.queryParamArr(query,values)
     console.log(result)

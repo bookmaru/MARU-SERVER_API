@@ -220,5 +220,30 @@ module.exports = {
     const myRoomList = await userModel.myRoomList(userIdx);
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_MY_ROOM_LIST, myRoomList));
+  },
+
+  report: async (req, res) => {
+    const reporterIdx = req.userIdx;
+    
+    if (!reporterIdx) {
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
+      return;
+    }
+
+    const {
+      reportMsg,
+      reportTargetIdx
+    } = req.body;
+
+    if (!reportMsg || !reportTargetIdx) {
+      res.status(statusCode.BAD_REQUEST)
+      .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+    return;
+    }
+
+    const report = await userModel.report(reportMsg, reportTargetIdx);
+    res.status(statusCode.OK)
+    .send(util.success(statusCode.OK, resMessage.REPORT_SUCCESS, report));
+
   }
 }
