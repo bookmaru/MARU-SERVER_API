@@ -92,7 +92,7 @@
         + room[roomIdx] + ' :('));
     });
     socket.on('joinRoom', (roomIdx,name) => {
-      $('#messages').append($('<li>').text('room'+[roomIdx]+'에 ' + name + '    님이 참여했습니다. '));
+      $('#messages').append($('<li>').text(room[roomIdx]+'에 ' + name + '    님이 참여했습니다. '));
         
     });
   });
