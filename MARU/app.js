@@ -70,16 +70,20 @@ app.get('/', function(request, response) {
   })
 })
   
-connection.query('SELECT count(*) as count FROM room', function (error, results, fields) {
+connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
     if (error) {
         console.log(error);
     }
     //console.log(results[0].count);
-    const getRoomCount = results[0].count;
     let room = [];
-    for (i = 1; i <= getRoomCount; i++){
-      room.push('room' + i)
+    for( var i in results){
+      room.push('room'+results[i].roomIdx)
     }
+    // const getRoomCount = results[0].count;
+    // let room = [];
+    // for (i = 1; i <= getRoomCount; i++){
+    //   room.push('room' + i)
+    // }
     console.log(room)
     let a = 0 ;
 
