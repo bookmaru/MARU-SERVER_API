@@ -62,7 +62,7 @@ module.exports = {
                 userIdx: user[0].userIdx
             };
             const dto = {
-                token: jwt.sign(payload, secretKey, options),
+                accessToken: jwt.sign(payload, secretKey, options),
                 refreshToken: jwt.sign(payload, secretKey, refreshOptions)
             };
             await UserModel.updateRefreshToken(payload.userIdx, dto.refreshToken);
