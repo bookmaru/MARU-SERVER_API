@@ -37,9 +37,7 @@ const chat = {
 
     try {
       const getUnread = await chatModel.getUnread(roomIdx, userIdx);
-      const getCount = await chatModel.getCount(roomIdx, userIdx);
-      console.log(getCount)
-      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_UNREAD, {getCount, getUnread}));
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_UNREAD, {getCount:getUnread.length, getUnread: getUnread}));
       return;
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
