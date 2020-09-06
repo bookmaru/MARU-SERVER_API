@@ -24,6 +24,10 @@ module.exports = {
     INVALID_TOKEN : "토큰이 잘못되었습니다",
     SUCCESS_TOKEN_REPLACEMENT : "토큰을 재발급했습니다",
 
+    EXPIRED_TOKEN : "토큰이 만료되었습니다",
+    INVALID_TOKEN : "토큰이 잘못되었습니다",
+    REPORT_SUCCESS : "신고하기 성공입니다",
+
     // 검색
     SUCCESS_USER : "유저를 검색 성공했습니다",
     NO_SEARCH : "검색한 결과가 존재하지 않습니다",
@@ -46,5 +50,6 @@ module.exports = {
 
     //채팅
     SEND_CHAT_SUCCESS: "DB에 채팅내용 넣기 성공",
-    SUCCESS_GET_ROOM_COUNT: "채팅방 개수 가져오기 성공"
+    SUCCESS_GET_ROOM_COUNT: "채팅방 개수 가져오기 성공",
+    SUCCESS_GET_UNREAD: "읽지 않은 메세지 가져오기 성공"
 };

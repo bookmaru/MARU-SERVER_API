@@ -110,13 +110,14 @@ const user = {
   },
 
   myRoomList: async (userIdx) => {
-    const query = `SELECT r.thumbnail, r.authors, r.title, r.info FROM ${table} u JOIN room r ON u.userIdx = r.userIdx WHERE u.userIdx = ${userIdx}`;
+    const query = `select distinct u.nickName, p.roomIdx, r.thumbnail, r.authors, r.title, r.info, r.createdAt from room r join ${table} u on r.userIdx join participant p on p.roomIdx = r.roomIdx where u.userIdx = ${userIdx} and r.roomIdx in (select p.roomIdx from participant p where p.userIdx=${userIdx})`;
     try {
       const result = await pool.queryParam(query);
       return result;
     } catch (err) {
       console.log(err);
     }
+
   },
 
   updateRefreshToken: async (userIdx, refreshToken) => {
@@ -127,7 +128,26 @@ const user = {
         console.log('checkUser ERROR : ', err);
         throw err;
     }
+
+  }, 
+
+  report: async (reporterIdx, reportMsg, reportTargetIdx) => {
+    const fields = 'reporterIdx, reportMsg, reportTargetIdx';
+    const questions = `?,?,?`;
+    const values = [reporterIdx, reportMsg, reportTargetIdx];
+    const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`;
+    try {
+      const result = await pool.queryParamArr(query, values);
+      const insertId = result.insertId;
+      return insertId;
+    } catch(err) {
+    if (err.errno == 1062) {
+      console.log('report ERROR : ', err.errno, err.code);
+      throw err;
+    }   
+
   }
+}
 }
 
 module.exports = user;
