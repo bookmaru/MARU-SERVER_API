@@ -110,7 +110,7 @@ const user = {
   },
 
   myRoomList: async (userIdx) => {
-    const query = `SELECT r.thumbnail, r.authors, r.title, r.info FROM ${table} u JOIN room r ON u.userIdx = r.userIdx WHERE u.userIdx = ${userIdx}`;
+    const query = `select distinct u.nickName, p.roomIdx, r.thumbnail, r.authors, r.title, r.info, r.createdAt from room r join ${table} u on r.userIdx join participant p on p.roomIdx = r.roomIdx where u.userIdx = ${userIdx} and r.roomIdx in (select p.roomIdx from participant p where p.userIdx=${userIdx})`;
     try {
       const result = await pool.queryParam(query);
       return result;
