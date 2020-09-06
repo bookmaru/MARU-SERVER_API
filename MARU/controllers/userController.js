@@ -14,6 +14,7 @@ module.exports = {
       rating,
       count
     } = req.body;
+
     if (!id || !password || !nickName) {
       res.status(statusCode.BAD_REQUEST)
         .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
@@ -25,11 +26,13 @@ module.exports = {
         .send(util.fail(statusCode.BAD_REQUEST, resMessage.ALREADY_ID));
       return;
     }
+
     if (await userModel.checkUserNick(nickName)) {
       res.status(statusCode.BAD_REQUEST)
         .send(util.fail(statusCode.BAD_REQUEST, resMessage.ALREADY_NICKNAME));
       return;
     }
+
     const {
       salt,
       hashed
@@ -55,17 +58,16 @@ module.exports = {
 
     res.status(statusCode.OK)
       .send(util.success(statusCode.OK, resMessage.CREATED_USER, {
-        accessToken: token
-        //, refreshToken: refreshToken
-      }));
-      
+        accessToken: token,
+        refreshToken: refreshToken
+      }));     
   },
+
   signin : async (req, res) => {
     const {
       id,
       password
     } = req.body;
-
 
     if (!id || !password) {
       res.status(statusCode.BAD_REQUEST)
@@ -88,15 +90,17 @@ module.exports = {
         .send(util.fail(statusCode.BAD_REQUEST, resMessage.MISS_MATCH_PW));
     }
 
+    // 로그인할 때 refreshToken, accessToken 새로 발급
     const {
       token,
-      __
+      refreshToken
     } = await jwt.sign(user[0]);
 
     // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
     res.status(statusCode.OK)
       .send(util.success(statusCode.OK, resMessage.LOGIN_SUCCESS, {
-        accessToken: token
+        accessToken: token,
+        refreshToken: refreshToken
     }));
   },
 
@@ -179,6 +183,7 @@ module.exports = {
 
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.AVAILABLE_NICKNAME))
   },
+
   rating : async ( req, res ) => {
     const {userIdx} = req.body;
     let {rating} = req.body;
