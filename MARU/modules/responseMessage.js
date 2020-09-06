@@ -20,6 +20,9 @@ module.exports = {
     LOGIN_SUCCESS : "로그인 성공했습니다",
     SUCCESS_LOGOUT : "로그아웃 되었습니다.",
     WITHDRAWAL_SUCCESS : "회원탈퇴 되었습니다.",
+    EXPIRED_TOKEN : "토큰만료입니다",
+    INVALID_TOKEN : "토큰이 잘못되었습니다",
+    SUCCESS_TOKEN_REPLACEMENT : "토큰을 재발급했습니다",
 
     // 검색
     SUCCESS_USER : "유저를 검색 성공했습니다",

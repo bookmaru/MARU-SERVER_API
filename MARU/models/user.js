@@ -117,6 +117,16 @@ const user = {
     } catch (err) {
       console.log(err);
     }
+  },
+
+  updateRefreshToken: async (userIdx, refreshToken) => {
+    const query = `UPDATE ${table} SET refreshToken = "${refreshToken}" WHERE userIdx = ${userIdx}`;
+    try {
+        const result = await pool.queryParam(query);
+    } catch (err) {
+        console.log('checkUser ERROR : ', err);
+        throw err;
+    }
   }
 }
 
