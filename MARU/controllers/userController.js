@@ -237,16 +237,16 @@ module.exports = {
 
     const {
       reportMsg,
-      reportTargetIdx
+      reportNickName
     } = req.body;
 
-    if (!reportMsg || !reportTargetIdx) {
+    if (!reportMsg || !reportNickName) {
       res.status(statusCode.BAD_REQUEST)
       .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
     return;
     }
 
-    const report = await userModel.report(reporterIdx, reportMsg, reportTargetIdx);
+    const report = await userModel.report(reporterIdx, reportMsg, reportNickName);
     res.status(statusCode.OK)
     .send(util.success(statusCode.OK, resMessage.REPORT_SUCCESS, report));
 

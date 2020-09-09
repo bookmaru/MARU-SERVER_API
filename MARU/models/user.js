@@ -131,10 +131,10 @@ const user = {
 
   }, 
 
-  report: async (reporterIdx, reportMsg, reportTargetIdx) => {
-    const fields = 'reporterIdx, reportMsg, reportTargetIdx';
+  report: async (reporterIdx, reportMsg, reportNickName) => {
+    const fields = 'reporterIdx, reportMsg, reportNickName';
     const questions = `?,?,?`;
-    const values = [reporterIdx, reportMsg, reportTargetIdx];
+    const values = [reporterIdx, reportMsg, reportNickName];
     const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`;
     try {
       const result = await pool.queryParamArr(query, values);
