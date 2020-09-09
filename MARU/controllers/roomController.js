@@ -32,22 +32,14 @@ const room = {
 
     try {
       const roomMake = await roomModel.make(thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx);
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS, {
+        roomIdx: roomMake
+      }));
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
       return;
     }
 
-    const roomIdx = await roomModel.getRoomIdx(userIdx);
-
-    const addLeader = await roomModel.addUser(userIdx, roomIdx);
-
-    if (addLeader === -1) {
-      return res.status(statusCode.DB_ERROR)
-        .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
-    }
-    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS, {
-      roomIdx: roomIdx
-    }));
   },
 
   /** 
