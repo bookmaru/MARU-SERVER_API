@@ -4,10 +4,10 @@ const table = 'chat';
 const chat = {
   //채팅 보낼때마다 db에 저장
   sendChat :  async (userIdx, msg, chatTime, roomIdx) => {
-    const fileds = 'userIdx, msg, chatTime, roomIdx';
+    const fields = 'userIdx, msg, chatTime, roomIdx';
     const questions = `?, ?, ?, ?`;
     const values = [userIdx, msg, chatTime, roomIdx];
-    const query = `INSERT INTO ${table}(${fileds}) VALUES(${questions})`; 
+    const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`; 
     try {
       const result = await pool.queryParamArr(query, values);
       return result.insertId;

@@ -104,10 +104,10 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         var date=new Date();
         let disconnectTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
 
-        const fileds = 'disconnectTime';
+        const fields = 'disconnectTime';
         const questions = `?`;
         const values = [disconnectTime];
-        const query = `UPDATE participant SET ${fileds} = ${questions} WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx=${roomIdx}`; 
+        const query = `UPDATE participant SET ${fields} = ${questions} WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx=${roomIdx}`; 
         const  result = pool.queryParamArr(query,values)
         console.log(query)
         console.log(result)
@@ -132,10 +132,10 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
 
         console.log(name, msg, chatTime, roomIdx+1)
 
-        const fileds = 'nickName, msg, chatTime, roomIdx';
+        const fields = 'nickName, msg, chatTime, roomIdx';
         const questions = `?, ?, ?, ?`;
         const values = [name, msg, chatTime, roomIdx + 1];
-        const query = `INSERT INTO chat(${fileds}) VALUES(${questions})`; 
+        const query = `INSERT INTO chat(${fields}) VALUES(${questions})`; 
 
         const result = pool.queryParamArr(query,values)
         console.log(result)
