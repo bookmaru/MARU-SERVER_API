@@ -83,8 +83,8 @@ const search = {
         res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
         return;
       }
-    }
-;
+    };
+
     const user = await jwt.verify(token);
 
     if (user === TOKEN_EXPIRED) {
@@ -95,13 +95,13 @@ const search = {
         return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, resMessage.INVALID_TOKEN));
     }
 
-    if (user.idx === undefined) {
+    if (user.userIdx === undefined) {
         return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, resMessage.INVALID_TOKEN));
     }
 
     // 로그인 유저 검색
     try {
-      const roomResult = await searchModel.searchRoom(title, user.idx);
+      const roomResult = await searchModel.searchRoom(title, user.userIdx);
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, roomResult));
       return;
     } catch (err) {
