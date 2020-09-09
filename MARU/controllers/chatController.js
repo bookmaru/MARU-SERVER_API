@@ -23,12 +23,22 @@ const chat = {
   },
 
   getUnread: async (req, res) => {
-    const roomIdx = req.params.roomIdx;
+    // const roomIdx = req.params.roomIdx;
+    let {roomIdx1, roomIdx2, roomIdx3} = req.body;
     const userIdx = req.userIdx;
-    if (!roomIdx) {
-      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
-      return;
+    if (!roomIdx1){
+      roomIdx1=0;
     }
+    if (!roomIdx2){
+      roomIdx2=0;
+    }
+    if (!roomIdx3){
+      roomIdx3=0;
+    }
+    // if (!roomIdx) {
+    //   res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+    //   return;
+    // }
 
     if (!userIdx) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
@@ -36,8 +46,10 @@ const chat = {
     }
 
     try {
-      const getUnread = await chatModel.getUnread(roomIdx, userIdx);
-      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_UNREAD, {getCount:getUnread.length, getUnread: getUnread}));
+      const getUnread = await chatModel.getUnread(roomIdx1, roomIdx2, roomIdx3, userIdx);
+      const getAlready = await chatModel.getAlready(roomIdx1, roomIdx2, roomIdx3);
+      const getCount = await chatModel.getCount(roomIdx1, roomIdx2, roomIdx3, userIdx);
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_UNREAD, {getCount:getCount, getAlready: getAlready, getUnread: getUnread}));
       return;
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
