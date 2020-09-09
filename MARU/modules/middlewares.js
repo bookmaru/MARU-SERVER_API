@@ -23,11 +23,11 @@ module.exports = {
             return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, resMessage.INVALID_TOKEN));
         }
 
-        if (user.idx === undefined) {
+        if (user.userIdx === undefined) {
             return res.status(statusCode.UNAUTHORIZED).send(util.fail(statusCode.UNAUTHORIZED, resMessage.INVALID_TOKEN));
         }
 
-        req.userIdx = user.idx;
+        req.userIdx = user.userIdx;
         next();
     },
 

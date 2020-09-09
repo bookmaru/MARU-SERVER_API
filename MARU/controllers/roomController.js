@@ -3,6 +3,7 @@ const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const roomModel = require('../models/room');
 const moment = require('moment');
+require('moment-timezone');
 
 const room = {
 
