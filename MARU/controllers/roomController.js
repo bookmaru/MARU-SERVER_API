@@ -33,6 +33,7 @@ const room = {
 
     try {
       const roomMake = await roomModel.make(thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx);
+      const participantAdd = await roomModel.addUser(userIdx, roomMake);
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS, {
         roomIdx: roomMake
       }));
