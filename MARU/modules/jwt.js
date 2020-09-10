@@ -9,7 +9,7 @@ const TOKEN_INVALID = -2;
 module.exports = {
     sign: async (user) => {
         const payload = {
-            idx: user.userIdx
+            userIdx: user.userIdx
         };
         const result = {
             token: jwt.sign(payload, secretKey, options),
@@ -17,7 +17,7 @@ module.exports = {
         };
         
         // refreshToken Update 
-        await UserModel.updateRefreshToken(payload.idx, result.refreshToken);
+        await UserModel.updateRefreshToken(payload.userIdx, result.refreshToken);
         return result;
     },
 
@@ -27,6 +27,7 @@ module.exports = {
         try {
             // 디코딩할 때도 idx와 name으로 분리해서 옴 
             decoded = jwt.verify(token, secretKey);
+    
         } catch (err) {
             if (err.message === 'jwt expired') {
                 console.log('expired token');
@@ -48,11 +49,11 @@ module.exports = {
         try {
             const result = jwt.verify(refreshToken, secretKey);
 
-            if (result.idx === undefined) {
+            if (result.userIdx === undefined) {
                 return TOKEN_INVALID;
             }
 
-            const user = await UserModel.getUserByIdx(result.idx);
+            const user = await UserModel.getUserByIdx(result.userIdx);
 
             if (refreshToken !== user[0].refreshToken) {
                 console.log('invalid refresh token');

@@ -3,6 +3,7 @@ const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const roomModel = require('../models/room');
 const moment = require('moment');
+require('moment-timezone');
 
 const room = {
 
@@ -10,7 +11,8 @@ const room = {
      * @summary 토론방 만들기
      * @param token, thumbnail, authors, title, quiz (1 ~ 5), answer (1 ~ 5), createdAt 
      * @return 
-     */
+  */
+
   make: async (req, res) => {
     const userIdx = req.userIdx;
 
@@ -31,29 +33,21 @@ const room = {
 
     try {
       const roomMake = await roomModel.make(thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx);
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS, {
+        roomIdx: roomMake
+      }));
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
       return;
     }
 
-    const roomIdx = await roomModel.getRoomIdx(userIdx);
-
-    const addLeader = await roomModel.addUser(userIdx, roomIdx);
-
-    if (addLeader === -1) {
-      return res.status(statusCode.DB_ERROR)
-        .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
-    }
-    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS, {
-      roomIdx: roomIdx
-    }));
   },
 
   /** 
-   * @summary 토론방 제한
-   * @param token
-   * @return 
-   */
+    * @summary 토론방 제한
+    * @param token
+    * @return 
+  */
 
   limitLeader: async (req, res) => {
     const userIdx = req.userIdx;
@@ -80,10 +74,10 @@ const room = {
   },
 
   /** 
-   * @summary 토론방 참여 제한
-   * @param token, roomIdx
-   * @return 
-   */
+    * @summary 토론방 참여 제한
+    * @param token, roomIdx
+    * @return 
+  */
 
   limitJoin: async (req, res) => {
     const userIdx = req.userIdx;
@@ -93,17 +87,26 @@ const room = {
       return;
     }
 
-    const limitParticipant = await roomModel.limitJoin(userIdx);
-
-    // 토론방 참여 가능
-    if (limitParticipant) {
-      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_JOIN_ROOM));
+    try {
+      const limitParticipant = await roomModel.limitJoin(userIdx);
+      // 토론방 참여 가능
+      if (limitParticipant) {
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_JOIN_ROOM));
+        return;
+      }
+      // 토론방 참여 불가능
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NOT_POSSIBLE_JOIN_ROOM));
+    } catch (err) {
+      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
       return;
-    }
-
-    // 토론방 참여 불가능
-    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NOT_POSSIBLE_JOIN_ROOM));
+      }
   },
+
+  /** 
+    * @summary 토론방 소개
+    * @param roomIdx
+    * @return 
+  */
 
   mainRoom: async (req, res) => {
     const roomIdx = req.params.roomIdx;
@@ -125,9 +128,9 @@ const room = {
 
 
   /** 
-  * @summary 토론방 퀴즈 합격 여부
-  * @param token, flag, roomIdx
-  * @return 
+    * @summary 토론방 퀴즈 합격 여부
+    * @param token, flag, roomIdx
+    * @return 
   */
 
   checkQuiz: async (req, res) => {
@@ -161,6 +164,13 @@ const room = {
     }    
   },
   
+
+  /** 
+    * @summary 토론방 퀴즈 
+    * @param roomIdx
+    * @return 
+  */
+
   quizRoom: async (req, res) => {
     const roomIdx = req.params.roomIdx;
     
@@ -168,6 +178,7 @@ const room = {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
     }
+
     try {
       const result = await roomModel.quizRoom(roomIdx);
       if (result.length === 0) {
@@ -179,14 +190,24 @@ const room = {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
       return;
     }
-
-    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.FAIL_QUIZ_SOLVED));
   },
 
+
+  /** 
+    * @summary 채팅방 개수 가져오기
+    * @param 
+    * @return getRoomCount 
+  */
+
   getRoomCount: async (req, res) => {
-    const getRoomCount = await roomModel.getRoomCount();
-    if (getRoomCount) {
-      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_ROOM_COUNT, {getRoomCount}));
+    try {
+      const getRoomCount = await roomModel.getRoomCount();
+      if (getRoomCount) {
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_ROOM_COUNT, {getRoomCount}));
+        return;
+      } 
+    } catch (err) {
+      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
       return;
     }
   },

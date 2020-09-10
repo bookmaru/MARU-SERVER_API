@@ -11,7 +11,7 @@ router.get('/roomInfo/:roomIdx', roomController.mainRoom);
 router.get('/roomQuiz/:roomIdx', roomController.quizRoom);
 router.post('/checkQuiz', middleware.userJwt, roomController.checkQuiz);
 router.get('/count', roomController.getRoomCount);
-router.get('/unread', middleware.userJwt, chatController.getUnread);
+router.post('/unread', middleware.userJwt, chatController.getUnread);
 
 
 module.exports = router

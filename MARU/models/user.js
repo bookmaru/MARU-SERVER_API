@@ -135,7 +135,7 @@ const user = {
     const fields = 'reporterIdx, reportMsg, reportNickName';
     const questions = `?,?,?`;
     const values = [reporterIdx, reportMsg, reportNickName];
-    const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`;
+    const query = `INSERT INTO report (${fields}) VALUES(${questions})`;
     try {
       const result = await pool.queryParamArr(query, values);
       const insertId = result.insertId;
