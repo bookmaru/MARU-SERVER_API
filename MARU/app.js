@@ -6,10 +6,10 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const app = express();
 const http = require('http')
-const server = http.createServer(app)
+const server = http.createServer(app) // http 서버를 연다 
 const socket = require('socket.io')
 const fs = require('fs')
-const io = socket.listen(server)
+const io = socket.listen(server)  // socket.io서버를 http에 연결해준다.
 const moment = require('moment');
 const pool = require('./modules/pool');
 const chat = require('./routes/chat');
@@ -87,19 +87,21 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
     console.log(room)
     let a = 0 ;
 
-
+// 'connection' 이벤트 발생
     io.on('connection', (socket) => {
+
+      // 클라이언트 접속 끊을 시 on('disconnect') 발생
       socket.on('disconnect', () => {
         console.log('user disconnected');
       });
-
+      // room 나가기 : socket.leave
       socket.on('leaveRoom', (roomIdx, name) => {
         socket.leave(room[roomIdx], () => {
           console.log(name + ' leave a ' + room[roomIdx]);
           io.to(room[roomIdx]).emit('leaveRoom', roomIdx, name);
         });
       });
-
+      // 토론에서 벗어난 시간 체크
       socket.on('leave', (name, roomIdx) => {
         var date=new Date();
         let disconnectTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
@@ -112,9 +114,9 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         console.log(query)
         console.log(result)
       });
-
-
-      socket.on('joinRoom', (roomIdx, name) => {
+      // room 접속  socket.join
+      // 특정 room 에게 이벤트 보낼 시 : io.to('room이름').emit()
+        socket.on('joinRoom', (roomIdx, name) => {
         socket.join(room[roomIdx], () => {
           room.push('room'+roomIdx);
           console.log(room)
@@ -124,7 +126,7 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         });
       });
 
-
+//클라 : socket.emit('chat message') , 서버 : socket.on('chat message') 매개변수 : name, msg, roomIdx
       socket.on('chat message', (name, msg, roomIdx) => {
         a=roomIdx;
         var date = new Date(); 
@@ -134,7 +136,7 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
 
         const fields = 'nickName, msg, chatTime, roomIdx';
         const questions = `?, ?, ?, ?`;
-        const values = [name, msg, chatTime, roomIdx + 1];
+        const values = [name, msg, chatTime, roomIdx];
         const query = `INSERT INTO chat(${fields}) VALUES(${questions})`; 
 
         const result = pool.queryParamArr(query,values)
