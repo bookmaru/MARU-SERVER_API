@@ -197,6 +197,7 @@ module.exports = {
   }
 
     const idx = await userModel.rating(userIdx, rating);
+    console.log({rating});
     if ( idx === -1 ) {
       return res.status(statusCode.DB_ERROR)
         .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));

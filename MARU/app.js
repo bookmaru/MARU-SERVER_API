@@ -75,7 +75,7 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         console.log(error);
     }
     //console.log(results[0].count);
-    let room = [];
+    let room = ['room0'];
     for( var i in results){
       room.push('room'+results[i].roomIdx)
     }
