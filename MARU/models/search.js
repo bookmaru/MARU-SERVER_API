@@ -9,7 +9,7 @@ const search = {
                    JOIN participant p ON p.roomIdx = r.roomIdx 
                    JOIN quizFail q 
                    WHERE  r.title LIKE '%${title}%' and r.roomIdx not in (select roomIdx from quizFail where userIdx = ${userIdx})
-                   GROUP BY r.roomIdx HAVING count(p.userIdx) < 5  `;
+                   GROUP BY r.roomIdx HAVING count(p.userIdx) < 5`;
     try {
       const result = await pool.queryParam(query);
       return result;
