@@ -51,4 +51,5 @@ module.exports = {
 
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_TOKEN_REPLACEMENT, newToken));
     }
+
 }
