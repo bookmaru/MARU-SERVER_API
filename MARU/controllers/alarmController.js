@@ -3,7 +3,7 @@ const alarmModel = require('../models/alarm');
 const firebaseConfig = require('../config/firebase.json');
 
 const alarm = {
-    alarm : async (req, res) => {
+    alarm: async (req, res) => {
         const roomIdx = req.params.roomIdx;
         const deviceTokens = await alarmModel.getDeviceToken(roomIdx);
         const registrationTokens = [];
@@ -15,28 +15,32 @@ const alarm = {
         console.log(registrationTokens)
         if (!admin.apps.length) {
             admin.initializeApp({
-            credential: admin.credential.cert(firebaseConfig),
-            databaseURL: "https://maru-40810.firebaseio.com"
-        });
-    }
-        var message = {
-            data: {
-                score: '850',
-                time: '2:45'
-            },
-            tokens: registrationTokens,
+                credential: admin.credential.cert(firebaseConfig),
+                databaseURL: "https://maru-40810.firebaseio.com"
+            });
+        }
+        var options = {
+            priority: 'high',
+            timeToLive: 60 * 60 * 24 * 2
         };
 
-          // Send a message to the device corresponding to the provided
-          // registration token.
-        admin.messaging().sendMulticast(message)
-            .then((response) => {
-              // Response is a message ID string.
-            console.log('Successfully sent message:', response);
-            })
-            .catch((error) => {
-            console.log('Error sending message:', error);
-            })
+        var payload = {
+            notification: {
+                title: "테스트",
+                body: "테스트",
+                sound: "default",
+                click_action: "FCM_PLUGIN_ACTIVITY"
+            },
+            data: {
+                test: "test가 성공적이네요 ~~ "
+            }
+        };
+
+        admin.messaging().sendToDevice(registrationTokens, payload, options).then(function (response) {
+            console.log('성공 메세지!' + response);
+        }).catch(function (error) {
+            console.log('보내기 실패 : ', error);
+        });
     }
 }
 
