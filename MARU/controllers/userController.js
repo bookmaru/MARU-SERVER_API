@@ -3,7 +3,7 @@ const util = require('../modules/util');
 const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const encrypt = require('../modules/crypto');
-const jwt = require('../modules/jwt');
+const jwt = require('../modules/jwt')
 
 module.exports = {
   signup : async ( req, res ) => {
@@ -12,10 +12,11 @@ module.exports = {
       password,
       nickName,
       rating,
-      count
+      count,
+      deviceToken,
     } = req.body;
 
-    if (!id || !password || !nickName) {
+    if (!id || !password || !nickName || !deviceToken) {
       res.status(statusCode.BAD_REQUEST)
         .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
@@ -38,7 +39,7 @@ module.exports = {
       hashed
     } = await encrypt.encrypt(password);
 
-    const idx = await userModel.signup( id, hashed, salt, nickName, rating, count);
+    const idx = await userModel.signup( id, hashed, salt, nickName, rating, count, deviceToken);
     if ( idx === -1 ) {
       return res.status(statusCode.DB_ERROR)
         .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
