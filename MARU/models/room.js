@@ -4,10 +4,10 @@ const table = 'room';
 const room = {
   // 토론방 개설
   make : async (thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx) => {
-    const fileds = 'thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx';
+    const fields = 'thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx';
     const questions = `?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?`;
     const values = [thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx];
-    const query = `INSERT INTO ${table}(${fileds}) VALUES(${questions})`; 
+    const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`; 
     try {
       const result = await pool.queryParamArr(query, values);
       return result.insertId;
@@ -18,10 +18,10 @@ const room = {
   },
 
     // 토론방에 방장 userIdx추가 - participant 테이블
-    addUser : async (userIdx, roomIdx) => {
-      const fields = 'userIdx, roomIdx';
-      const questions = `?, ?`;
-      const values = [userIdx, roomIdx];
+    addUser : async (userIdx, roomIdx, disconnectFlag) => {
+      const fields = 'userIdx, roomIdx, disconnectFlag';
+      const questions = `?, ?, ?`;
+      const values = [userIdx, roomIdx, 1];
       const query = `INSERT INTO participant(${fields}) VALUES(${questions})`; 
       try {
         const result = await pool.queryParamArr(query, values);

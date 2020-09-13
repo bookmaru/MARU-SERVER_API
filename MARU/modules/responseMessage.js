@@ -1,4 +1,5 @@
 module.exports = {
+    INTERNAL_SERVER_ERROR: "서버 오류",
     NULL_VALUE: '필요한 값이 없습니다',
     OUT_OF_VALUE: '파라미터 값이 잘못되었습니다',
     SERVER_ERROR : "서버에러입니다",
@@ -51,5 +52,6 @@ module.exports = {
     //채팅
     SEND_CHAT_SUCCESS: "DB에 채팅내용 넣기 성공",
     SUCCESS_GET_ROOM_COUNT: "채팅방 개수 가져오기 성공",
-    SUCCESS_GET_UNREAD: "읽지 않은 메세지 가져오기 성공"
+    SUCCESS_GET_UNREAD: "읽지 않은 메세지 가져오기 성공",
+    SEND_MESSAGE_SUCCESS: "메시지 전송 성공"
 };
