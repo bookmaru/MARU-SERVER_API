@@ -203,10 +203,7 @@ module.exports = {
     }
 
     res.status(statusCode.OK)
-      .send(util.success(statusCode.OK, resMessage.UPDATE_RATING, {
-        roomLeaderNick : nickName,
-        rating : rating
-      }));
+      .send(util.success(statusCode.OK, resMessage.UPDATE_RATING));
   },
 
 /*
