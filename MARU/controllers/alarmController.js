@@ -16,18 +16,17 @@ const alarm = {
             credential: admin.credential.cert(firebaseConfig),
             databaseURL: "https://maru-40810.firebaseio.com"
         });
- 
         var message = {
             data: {
                 score: '850',
                 time: '2:45'
             },
-            token: registrationTokens[0],
+            tokens: registrationTokens,
         };
 
           // Send a message to the device corresponding to the provided
           // registration token.
-        admin.messaging().sendToDevice(message)
+        admin.messaging().sendMulticast(message)
             .then((response) => {
               // Response is a message ID string.
             console.log('Successfully sent message:', response);

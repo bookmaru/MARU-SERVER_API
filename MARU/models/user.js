@@ -147,7 +147,18 @@ const user = {
     }   
 
   }
-}
+},
+
+  updateToken: async(userIdx, deviceToken) => {
+    const query = `UPDATE ${table} SET deviceToken = "${deviceToken}" WHERE userIdx = ${userIdx}`;
+    try {
+      const result = await pool.queryParam(query);
+  } catch (err) {
+      console.log('Update Device Token ERROR : ', err);
+      throw err;
+  }
+  }
+  
 }
 
 module.exports = user;

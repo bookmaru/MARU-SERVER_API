@@ -24,6 +24,7 @@ module.exports = {
     EXPIRED_TOKEN : "토큰만료입니다",
     INVALID_TOKEN : "토큰이 잘못되었습니다",
     SUCCESS_TOKEN_REPLACEMENT : "토큰을 재발급했습니다",
+    UPDATE_TOKEN_SUCCESS : "디바이스 토큰 갱신 성공",
 
     EXPIRED_TOKEN : "토큰이 만료되었습니다",
     INVALID_TOKEN : "토큰이 잘못되었습니다",
