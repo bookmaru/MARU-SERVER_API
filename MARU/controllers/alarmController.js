@@ -26,7 +26,6 @@ const alarm = {
                 }
                 registrationTokens.push(deviceTokens[i].deviceToken);
             }
-            console.log(registrationTokens);
 
             if (!admin.apps.length) {
                 admin.initializeApp({
