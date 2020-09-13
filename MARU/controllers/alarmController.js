@@ -16,7 +16,7 @@ const alarm = {
         }
 
         try {
-            const deviceTokens = await alarmModel.getDeviceToken(roomIdx);
+            const deviceTokens = await alarmModel.getDeviceToken(roomIdx, nickName);
             const registrationTokens = [];
 
             for (let i = 0; i < deviceTokens.length; ++i) {
