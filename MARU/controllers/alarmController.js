@@ -8,11 +8,22 @@ const resMessage = require('../modules/responseMessage');
 const alarm = {
     alarm: async (req, res) => {
         const roomIdx = req.params.roomIdx;
+        const {title, nickName, message} = req.body;
+
+        if (!roomIdx || !title || !nickName || !message) {
+            res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+            return;
+        }
+
         try {
             const deviceTokens = await alarmModel.getDeviceToken(roomIdx);
             const registrationTokens = [];
 
             for (let i = 0; i < deviceTokens.length; ++i) {
+                if (deviceTokens[i].deviceToken == null) {
+                    res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
+                    return;
+                }
                 registrationTokens.push(deviceTokens[i].deviceToken);
             }
             console.log(registrationTokens);
@@ -30,14 +41,12 @@ const alarm = {
 
             var payload = {
                 notification: {
-                    title: "새로운 메세지가 왔습니다",
-                    body: "새로운 메세지가 왔습니다",
+                    title: title,
+                    body: nickName + " : " + message,
                 },
-                data: {
-                    test: "test가 성공적이네요 ~~ "
-                }
             };
 
+            admin.messaging().sendMulticast
             admin.messaging().sendToDevice(registrationTokens, payload, options).then(function (response) {
                 console.log('성공 메세지!' + response);
                 res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_ALARM));
