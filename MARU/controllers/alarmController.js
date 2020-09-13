@@ -12,10 +12,12 @@ const alarm = {
             registrationTokens.push(deviceTokens[i].deviceToken);
         }
         console.log(registrationTokens)
-        admin.initializeApp({
+        if (!admin.apps.length) {
+            admin.initializeApp({
             credential: admin.credential.cert(firebaseConfig),
             databaseURL: "https://maru-40810.firebaseio.com"
         });
+    }
         var message = {
             data: {
                 score: '850',
