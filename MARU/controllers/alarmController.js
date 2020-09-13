@@ -11,6 +11,7 @@ const alarm = {
         for (let i = 0; i < deviceTokens.length; ++i) {
             registrationTokens.push(deviceTokens[i].deviceToken);
         }
+
         console.log(registrationTokens)
         if (!admin.apps.length) {
             admin.initializeApp({
