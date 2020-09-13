@@ -85,8 +85,8 @@ const user = {
       throw err;
     }
   },
-  rating : async (userIdx, rating) => {
-    const query = `UPDATE ${table} SET rating = rating+ ${rating}, count = count+1 WHERE userIdx = ${userIdx} `;
+  rating : async (nickName, rating) => {
+    const query = `UPDATE ${table} SET rating = rating+ ${rating}, count = count+1 WHERE nickName = "${nickName}" `;
     try{
       return await pool.queryParam(query);
     } catch (err) {

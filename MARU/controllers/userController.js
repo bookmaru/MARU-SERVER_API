@@ -185,17 +185,17 @@ module.exports = {
   },
 
   rating : async ( req, res ) => {
-    const {userIdx} = req.body;
+    const {nickName} = req.body;
     let {rating} = req.body;
     if (!rating){
       rating = 3;
     }
-    if (!userIdx) {
+    if (!nickName) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE))
       return;
   }
 
-    const idx = await userModel.rating(userIdx, rating);
+    const idx = await userModel.rating(nickName, rating);
     console.log({rating});
     if ( idx === -1 ) {
       return res.status(statusCode.DB_ERROR)
@@ -204,7 +204,7 @@ module.exports = {
 
     res.status(statusCode.OK)
       .send(util.success(statusCode.OK, resMessage.UPDATE_RATING, {
-        roomLeaderIdx : userIdx,
+        roomLeaderNick : nickName,
         rating : rating
       }));
   },
