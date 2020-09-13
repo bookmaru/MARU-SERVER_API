@@ -106,11 +106,8 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         var date=new Date();
         let disconnectTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
 
-        const fields = 'disconnectTime, disconnectFlag';
-        const questions = `?,?`;
-        const values = [disconnectTime, 0];
-        const query = `UPDATE participant SET ${fields} = ${questions} WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx=${roomIdx}`; 
-        const  result = pool.queryParamArr(query,values)
+        const query = `UPDATE participant SET disconnectTime = "${disconnectTime}", disconnectFlag = 0 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
+        const  result = pool.queryParam(query);
         console.log(query)
         console.log(result)
       });
