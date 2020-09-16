@@ -156,14 +156,15 @@ const room = {
       // true 라면 participant 테이블 insert
       try {
         const participant = await roomModel.quizPass(userIdx, roomIdx);
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_QUIZ_SOLVED));
+        return;
       } catch (err) {
         res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         return;
       }
-
-      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_QUIZ_SOLVED));
-      return;
-    }    
+    }  
+    
+    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.FAIL_QUIZ_SOLVED));
   },
   
 

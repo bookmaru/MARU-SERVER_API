@@ -1,40 +1,63 @@
 const admin = require("firebase-admin");
 const alarmModel = require('../models/alarm');
 const firebaseConfig = require('../config/firebase.json');
+const util = require('../modules/util');
+const statusCode = require('../modules/statusCode');
+const resMessage = require('../modules/responseMessage');
 
 const alarm = {
-    alarm : async (req, res) => {
+    alarm: async (req, res) => {
         const roomIdx = req.params.roomIdx;
-        const deviceTokens = await alarmModel.getDeviceToken(roomIdx);
-        const registrationTokens = [];
+        const {title, nickName, message} = req.body;
 
-        for (let i = 0; i < deviceTokens.length; ++i) {
-            registrationTokens.push(deviceTokens[i].deviceToken);
+        if (!roomIdx || !title || !nickName || !message) {
+            res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+            return;
         }
-        console.log(registrationTokens)
-        admin.initializeApp({
-            credential: admin.credential.cert(firebaseConfig),
-            databaseURL: "https://maru-40810.firebaseio.com"
-        });
- 
-        var message = {
-            data: {
-                score: '850',
-                time: '2:45'
-            },
-            token: registrationTokens[0],
-        };
 
-          // Send a message to the device corresponding to the provided
-          // registration token.
-        admin.messaging().sendToDevice(message)
-            .then((response) => {
-              // Response is a message ID string.
-            console.log('Successfully sent message:', response);
-            })
-            .catch((error) => {
-            console.log('Error sending message:', error);
-            })
+        try {
+            const deviceTokens = await alarmModel.getDeviceToken(roomIdx, nickName);
+            const registrationTokens = [];
+
+            for (let i = 0; i < deviceTokens.length; ++i) {
+                if (deviceTokens[i].deviceToken == null) {
+                    res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
+                    return;
+                }
+                registrationTokens.push(deviceTokens[i].deviceToken);
+            }
+
+            if (!admin.apps.length) {
+                admin.initializeApp({
+                    credential: admin.credential.cert(firebaseConfig),
+                    databaseURL: "https://maru-40810.firebaseio.com"
+                });
+            }
+            var options = {
+                priority: 'high',
+                timeToLive: 60 * 60 * 24 * 2
+            };
+
+            var payload = {
+                notification: {
+                    title: title,
+                    body: nickName + " : " + message,
+                },
+            };
+
+            admin.messaging().sendToDevice(registrationTokens, payload, options).then(function (response) {
+                console.log('성공 메세지!' + response);
+                res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_ALARM));
+                return;
+            }).catch(function (error) {
+                console.log('보내기 실패 : ', error);
+                res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
+                return;
+            });
+        } catch (err) {
+            res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
+            return;
+        }
     }
 }
 

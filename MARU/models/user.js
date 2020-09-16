@@ -2,10 +2,10 @@ const pool = require('../modules/pool');
 const table = 'user';
 
 const user = {
-  signup : async (id,  password, salt, nickName, rating, count) => {
-    const fields = 'id, password, salt, nickName, rating, count';
-    const questions = `?, ?, ?, ?, ?, ?`;
-    const values = [id, password, salt, nickName, rating, count];
+  signup : async (id,  password, salt, nickName, rating, count, deviceToken) => {
+    const fields = 'id, password, salt, nickName, rating, count, deviceToken';
+    const questions = `?, ?, ?, ?, ?, ?, ?`;
+    const values = [id, password, salt, nickName, rating, count, deviceToken];
     const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`;
     try {
       const result = await pool.queryParamArr(query, values);
@@ -147,7 +147,18 @@ const user = {
     }   
 
   }
-}
+},
+
+  updateToken: async(userIdx, deviceToken) => {
+    const query = `UPDATE ${table} SET deviceToken = "${deviceToken}" WHERE userIdx = ${userIdx}`;
+    try {
+      const result = await pool.queryParam(query);
+  } catch (err) {
+      console.log('Update Device Token ERROR : ', err);
+      throw err;
+  }
+  }
+  
 }
 
 module.exports = user;

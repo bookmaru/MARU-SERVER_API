@@ -24,6 +24,7 @@ module.exports = {
     EXPIRED_TOKEN : "토큰만료입니다",
     INVALID_TOKEN : "토큰이 잘못되었습니다",
     SUCCESS_TOKEN_REPLACEMENT : "토큰을 재발급했습니다",
+    UPDATE_TOKEN_SUCCESS : "디바이스 토큰 갱신 성공",
 
     EXPIRED_TOKEN : "토큰이 만료되었습니다",
     INVALID_TOKEN : "토큰이 잘못되었습니다",
@@ -53,5 +54,8 @@ module.exports = {
     SEND_CHAT_SUCCESS: "DB에 채팅내용 넣기 성공",
     SUCCESS_GET_ROOM_COUNT: "채팅방 개수 가져오기 성공",
     SUCCESS_GET_UNREAD: "읽지 않은 메세지 가져오기 성공",
-    SEND_MESSAGE_SUCCESS: "메시지 전송 성공"
+    SEND_MESSAGE_SUCCESS: "메시지 전송 성공",
+
+    // 알람
+    SUCCESS_ALARM : "알람 성공입니다",
 };

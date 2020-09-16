@@ -12,5 +12,6 @@ router.get('/profile', middleware.userJwt, userController.profile); //내 프로
 router.post('/withdrawal', middleware.userJwt, userController.withdrawal); //회원탈퇴
 router.get('/myRoom', middleware.userJwt, userController.myRoom) // 나의 모임
 router.post('/report',middleware.userJwt,userController.report ); // 신고하기
+router.post('/updateToken', middleware.userJwt, userController.updateToken); // 디바이스 토큰 업데이트
 
 module.exports = router; 
