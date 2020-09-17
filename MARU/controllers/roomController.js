@@ -60,6 +60,7 @@ const room = {
     }
 
     try {
+      const getExpired = await roomModel.getExpired();
       const CheckLimitMakeRoom = await roomModel.limitMakeRoom(userIdx);
       // 방을 만들 수 있을 때
       if (CheckLimitMakeRoom) {
@@ -90,6 +91,7 @@ const room = {
     }
 
     try {
+      const getExpired = await roomModel.getExpired();
       const limitParticipant = await roomModel.limitJoin(userIdx);
       // 토론방 참여 가능
       if (limitParticipant) {
