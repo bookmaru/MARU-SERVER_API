@@ -4,6 +4,7 @@ const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const encrypt = require('../modules/crypto');
 const jwt = require('../modules/jwt')
+const roomModel = require('../models/room');
 
 module.exports = {
   signup : async ( req, res ) => {

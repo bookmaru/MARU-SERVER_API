@@ -155,7 +155,6 @@ quizRoom: async (roomIdx) => {
         }
       }
       const query2 = `UPDATE ${table} SET expired='true' where roomIdx in (${expiredRoom})`; 
-      console.log(query2)
       try {
         const  result = pool.queryParam(query2);
         return result
