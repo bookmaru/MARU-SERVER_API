@@ -21,7 +21,7 @@ const room = {
       return;
     }
 
-    const { thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5} = req.body;
+    const { thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, expired} = req.body;
 
     if (!thumbnail || !authors || !title || !info || !quiz1 || !quiz2 || !quiz3 || !quiz4 || !quiz5 || !answer1 || !answer2 || !answer3 || !answer4 || !answer5) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
@@ -32,7 +32,7 @@ const room = {
     const createdAt = moment().format('YYYY-MM-DD HH:mm:ss')
 
     try {
-      const roomMake = await roomModel.make(thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx);
+      const roomMake = await roomModel.make(thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired);
       
       const participantAdd = await roomModel.addUser(userIdx, roomMake);
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS, {
@@ -214,6 +214,19 @@ const room = {
       return;
     }
   },
+  getExpired: async (req, res) => {
+    try {
+      const getExpired = await roomModel.getExpired();
+      if (getExpired) {
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_ROOM_COUNT, {getExpired}));
+        return;
+      } 
+    } catch (err) {
+      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
+      return;
+    }
+  },
+
 }
 
 module.exports = room;

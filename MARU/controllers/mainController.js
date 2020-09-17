@@ -2,7 +2,7 @@ const util = require('../modules/util');
 const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const mainModel = require('../models/main');
-
+const roomModel = require('../models/room');
 const main = {
 
   /** 
@@ -13,6 +13,7 @@ const main = {
   mainView1: async (req, res) => {   
     // 방의 개수가 많은 순서대로
     try {
+      const getExpired = await roomModel.getExpired();
       const popularViewList = await mainModel.ManyRoom();
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_MAIN_VIEW_LIST1, {
         popularRoomList: popularViewList,
@@ -32,7 +33,7 @@ const main = {
       res.status(statusCode.BAD_REQUEST).send(statusCode.BAD_REQUEST, resMessage.NULL_VALUE);
       return;
     }
-
+    const getExpired = await roomModel.getExpired();
     try {
       // 가장 최근에 개설된 방 순서대로
       const newRoomList = await mainModel.newRoom(pageStart - 1, pageEnd);

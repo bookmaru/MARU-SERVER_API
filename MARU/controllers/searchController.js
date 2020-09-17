@@ -5,6 +5,7 @@ const request = require('request');
 const kakaoOptions = require('../config/kakao');
 const searchModel = require('../models/search');
 const user = require('../models/user');
+const roomModel = require('../models/room');
 const jwt = require('../modules/jwt');
 const TOKEN_EXPIRED = -3;
 const TOKEN_INVALID = -2;;
@@ -101,6 +102,7 @@ const search = {
 
     // 로그인 유저 검색
     try {
+      const getExpired = await roomModel.getExpired();
       const roomResult = await searchModel.searchRoom(title, user.userIdx);
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, roomResult));
       return;
