@@ -11,9 +11,15 @@ const chat = {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
     }
+    const {pageStart, pageEnd} = req.query;
+
+    if (pageStart === undefined || pageEnd === undefined) {
+      res.status(statusCode.BAD_REQUEST).send(statusCode.BAD_REQUEST, resMessage.NULL_VALUE);
+      return;
+    }
 
     try {
-      const getChat = await chatModel.getChat(roomIdx);
+      const getChat = await chatModel.getChat(roomIdx, pageStart -1 , pageEnd);
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_JOIN_ROOM, getChat));
       return;
     } catch (err) {
