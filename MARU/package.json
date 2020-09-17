@@ -12,6 +12,7 @@
     "ejs": "^3.1.5",
     "express": "~4.16.1",
     "fcm-node": "^1.5.2",
+    "hangul-js": "^0.2.6",
     "firebase-admin": "^9.2.0",
     "http-errors": "^1.6.3",
     "jade": "~1.11.0",

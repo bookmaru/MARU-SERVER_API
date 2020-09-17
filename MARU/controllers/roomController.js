@@ -3,6 +3,7 @@ const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 const roomModel = require('../models/room');
 const moment = require('moment');
+const Hangul = require('hangul-js');
 require('moment-timezone');
 
 const room = {
@@ -28,18 +29,24 @@ const room = {
       return;
     }
 
-    moment.tz.setDefault("Asia/Seoul");
-    const createdAt = moment().format('YYYY-MM-DD HH:mm:ss')
+  
+    try {    
+      // 모든 공백을 제거하는 정규식
+      const searchKeyword = title.replace(/(\s*)/g,"");
+      const consonantVowel = Hangul.disassemble(searchKeyword);
+      moment.tz.setDefault("Asia/Seoul");
+      const createdAt = moment().format('YYYY-MM-DD HH:mm:ss')
 
-    try {
-      const roomMake = await roomModel.make(thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired);
-      
+      // 자모음 분리 결과가 배열이라 문자열로 합치기 
+      const titleConsonatVowel = consonantVowel.join("");
+
+      const roomMake = await roomModel.make(thumbnail, authors, title, titleConsonatVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired);
       const participantAdd = await roomModel.addUser(userIdx, roomMake);
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS, {
         roomIdx: roomMake
       }));
     } catch (err) {
-      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
       return;
     }
 
@@ -103,7 +110,7 @@ const room = {
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
       return;
-      }
+    }
   },
 
   /** 
@@ -119,11 +126,11 @@ const room = {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
     }
-    
+
     try {
       const idx = await roomModel.mainRoom(roomIdx);
       return res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_ROOM_SUCCESS, idx));
-  
+
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
     }
@@ -164,11 +171,11 @@ const room = {
         res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         return;
       }
-    }  
-    
+    }
+
     res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.FAIL_QUIZ_SOLVED));
   },
-  
+
 
   /** 
     * @summary 토론방 퀴즈 
@@ -178,7 +185,7 @@ const room = {
 
   quizRoom: async (req, res) => {
     const roomIdx = req.params.roomIdx;
-    
+
     if (!roomIdx) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
@@ -208,9 +215,9 @@ const room = {
     try {
       const getRoomCount = await roomModel.getRoomCount();
       if (getRoomCount) {
-        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_ROOM_COUNT, {getRoomCount}));
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_GET_ROOM_COUNT, { getRoomCount }));
         return;
-      } 
+      }
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));
       return;

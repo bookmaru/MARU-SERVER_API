@@ -7,6 +7,7 @@ const searchModel = require('../models/search');
 const user = require('../models/user');
 const roomModel = require('../models/room');
 const jwt = require('../modules/jwt');
+const Hangul = require('hangul-js');
 const TOKEN_EXPIRED = -3;
 const TOKEN_INVALID = -2;;
 
@@ -72,11 +73,17 @@ const search = {
     }
 
     const token = req.headers.token;
+    // 모든 공백을 제거하는 정규식
+    const searchKeyword = title.replace(/(\s*)/g,"");
+    const consonantVowel = Hangul.disassemble(searchKeyword);
+
+    // 자모음 분리 결과가 배열이라 문자열로 합치기
+    const titleConsonatVowel = consonantVowel.join("");
 
     // 비회원 유저
     if (!token) {
-      try {
-        const result = await searchModel.NotLoginUserSearch(title);
+      try {  
+        const result = await searchModel.NotLoginUserSearch(titleConsonatVowel);
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, result));
         return;
       } catch (err) {
@@ -102,8 +109,9 @@ const search = {
 
     // 로그인 유저 검색
     try {
+      const roomResult = await searchModel.searchRoom(titleConsonatVowel, user.userIdx);
       const getExpired = await roomModel.getExpired();
-      const roomResult = await searchModel.searchRoom(title, user.userIdx);
+
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, roomResult));
       return;
     } catch (err) {
