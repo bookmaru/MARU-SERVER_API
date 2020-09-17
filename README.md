@@ -10,7 +10,7 @@ MARU는 대학생 연합 IT 벤처창업 동아리 SOPT 내에서 애플리케�
 <br>
 
 <div>
- <img src="https://user-images.githubusercontent.com/58697091/93447777-c4cece00-f90d-11ea-9720-70cb41d13168.png" width="200" height="300">
+ <img src="https://user-images.githubusercontent.com/58697091/93447777-c4cece00-f90d-11ea-9720-70cb41d13168.png" width="400" height="600">
 </div>
   
 <br>
