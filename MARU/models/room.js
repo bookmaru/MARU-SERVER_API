@@ -1,12 +1,15 @@
 const pool = require('../modules/pool');
 const table = 'room';
+const moment = require('moment');
+ 
 
 const room = {
   // 토론방 개설
-  make : async (thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx) => {
-    const fields = 'thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx';
-    const questions = `?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?`;
-    const values = [thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx];
+  make : async (thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired) => {
+    const fields = 'thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired';
+    const questions = `?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?`;
+    const values = [thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired];
+
     const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`; 
     try {
       const result = await pool.queryParamArr(query, values);
@@ -34,7 +37,7 @@ const room = {
 
   // 토론방 방장 제한
   limitMakeRoom: async (userIdx) => {
-    const query = `SELECT * FROM ${table} WHERE userIdx = ${userIdx}`;
+    const query = `SELECT * FROM ${table} WHERE userIdx = ${userIdx} and expired='false'`;
     try {
       const result = await pool.queryParam(query);
       if (result.length === 0) {
@@ -48,9 +51,10 @@ const room = {
 
   // 토론방 참여 제한
   limitJoin: async (userIdx) => {
-    const query = `SELECT * FROM participant WHERE userIdx = ${userIdx}`;
+    const query = `SELECT p.roomIdx FROM participant p join room r on p.roomIdx=r.roomIdx WHERE p.userIdx = ${userIdx} and r.expired='false' `;
     try {
       const result = await pool.queryParam(query);
+      console.log(result.length)
       if (result.length < 2) {
         return true;
       }
@@ -136,6 +140,29 @@ quizRoom: async (roomIdx) => {
       console.log(result)
       console.log(result[0].count)
       return result[0].count;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  getExpired: async () => {
+    const query = `SELECT roomIdx, createdAt FROM ${table}`;
+    try {
+      const result = await pool.queryParam(query);
+      let expiredRoom = []
+      for(var i in result){
+        if (result[i].createdAt <= moment().subtract(7, 'd')){
+          expiredRoom.push(result[i].roomIdx);
+        }
+      }
+      const query2 = `UPDATE ${table} SET expired='true' where roomIdx in (${expiredRoom})`; 
+      try {
+        const  result = pool.queryParam(query2);
+        return result
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
     } catch (err) {
       console.log(err);
     }
