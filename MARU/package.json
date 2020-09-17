@@ -14,7 +14,6 @@
     "fcm-node": "^1.5.2",
     "firebase-admin": "^9.2.0",
     "http-errors": "^1.6.3",
-    "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
