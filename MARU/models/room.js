@@ -5,10 +5,11 @@ const moment = require('moment');
 
 const room = {
   // 토론방 개설
-  make : async (thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired) => {
-    const fields = 'thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired';
-    const questions = `?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?`;
-    const values = [thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired];
+  make : async (thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired) => {
+    const fields = 'thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired';
+    const questions = `?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?`;
+    const values = [thumbnail, authors, title, consonantVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx, expired];
+
     const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`; 
     try {
       const result = await pool.queryParamArr(query, values);
