@@ -19,8 +19,8 @@ const search = {
     }
   },
 
-  NotLoginUserSearch: async (title) => {
-    const query = `SELECT r.roomIdx, r.thumbnail, r.title, r.authors, r.info, r.createdAt, u.nickName FROM room r JOIN user u ON r.userIdx = u.userIdx WHERE r.consonantVowel LIKE '%${title}%'`;
+  NotLoginUserSearch: async (title, pageStart, pageEnd) => {
+    const query = `SELECT r.roomIdx, r.thumbnail, r.title, r.authors, r.info, r.createdAt, u.nickName FROM room r JOIN user u ON r.userIdx = u.userIdx WHERE r.consonantVowel LIKE '%${title}%' LIMIT ${pageStart}, ${pageEnd}`;
     try {
        const result = await pool.queryParam(query);
        return result;

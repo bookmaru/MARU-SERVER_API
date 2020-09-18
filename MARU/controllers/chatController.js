@@ -20,6 +20,7 @@ const chat = {
 
     try {
       const getChat = await chatModel.getChat(roomIdx, pageStart -1 , pageEnd);
+      getChat.reverse();
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_JOIN_ROOM, getChat));
       return;
     } catch (err) {
