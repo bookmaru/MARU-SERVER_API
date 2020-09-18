@@ -111,7 +111,7 @@ quizRoom: async (roomIdx) => {
 
   // 퀴즈 합격
   quizPass: async(userIdx, roomIdx) => {
-    const query = `INSERT INTO participant (userIdx, roomIdx) VALUES (${userIdx}, ${roomIdx})`;
+    const query = `INSERT INTO participant (userIdx, roomIdx, disconnectFlag) VALUES (${userIdx}, ${roomIdx}, false)`;
     try {
       const result = await pool.queryParam(query);
       return result;
