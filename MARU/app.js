@@ -102,7 +102,8 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         var date=new Date();
         let disconnectTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
 
-        const query = `UPDATE participant SET disconnectTime = "${disconnectTime}", disconnectFlag = 0 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
+        const query = `UPDATE participant SET disconnectTime = "${disconnectTime}",
+          disconnectFlag = 0 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
         const  result = pool.queryParam(query);
         console.log(query)
         console.log(result)
@@ -114,6 +115,8 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
           room.push('room'+roomIdx);
           console.log(room)
           console.log(name + ' join a ' + room[roomIdx]);
+          const query = `UPDATE participant SET disconnectFlag = 1 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
+        const  result = pool.queryParam(query);
           //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
           io.to(room[roomIdx]).emit('joinRoom', roomIdx,name);
         });

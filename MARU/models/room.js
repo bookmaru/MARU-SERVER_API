@@ -111,7 +111,7 @@ quizRoom: async (roomIdx) => {
 
   // 퀴즈 합격
   quizPass: async(userIdx, roomIdx) => {
-    const query = `INSERT INTO participant (userIdx, roomIdx) VALUES (${userIdx}, ${roomIdx})`;
+    const query = `INSERT INTO participant (userIdx, roomIdx, disconnectFlag) VALUES (${userIdx}, ${roomIdx}, false)`;
     try {
       const result = await pool.queryParam(query);
       return result;
@@ -154,6 +154,7 @@ quizRoom: async (roomIdx) => {
           expiredRoom.push(result[i].roomIdx);
         }
       }
+      if (expiredRoom.length != 0){
       const query2 = `UPDATE ${table} SET expired='true' where roomIdx in (${expiredRoom})`; 
       try {
         const  result = pool.queryParam(query2);
@@ -161,11 +162,12 @@ quizRoom: async (roomIdx) => {
       } catch (err) {
         console.log(err);
         throw err;
-      }
+      }}
     } catch (err) {
       console.log(err);
     }
-  },
+    
+  }
 }
 
 module.exports = room;
