@@ -20,7 +20,7 @@ const chat = {
 
     try {
       const getChat = await chatModel.getChat(roomIdx, pageStart -1 , pageEnd);
-      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_JOIN_ROOM, getChat));
+      res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_MESSAGE_GET, getChat));
       return;
     } catch (err) {
       res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.SERVER_ERROR));

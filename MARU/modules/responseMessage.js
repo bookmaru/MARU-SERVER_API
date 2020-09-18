@@ -55,6 +55,7 @@ module.exports = {
     SUCCESS_GET_ROOM_COUNT: "채팅방 개수 가져오기 성공",
     SUCCESS_GET_UNREAD: "읽지 않은 메세지 가져오기 성공",
     SEND_MESSAGE_SUCCESS: "메시지 전송 성공",
+    SUCCESS_MESSAGE_GET : "메세지 가져오기 성공",
 
     // 알람
     SUCCESS_ALARM : "알람 성공입니다",
