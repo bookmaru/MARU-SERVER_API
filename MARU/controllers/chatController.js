@@ -18,6 +18,7 @@ const chat = {
       return;
     }
 
+    console.log(pageStart + " " + pageEnd);
     try {
       const getChat = await chatModel.getChat(roomIdx, pageStart -1 , pageEnd);
       getChat.reverse();
