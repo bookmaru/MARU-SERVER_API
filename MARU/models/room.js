@@ -54,7 +54,7 @@ const room = {
     const query = `SELECT p.roomIdx FROM participant p join room r on p.roomIdx=r.roomIdx WHERE p.userIdx = ${userIdx} and r.expired='false'`;
     try {
       const result = await pool.queryParam(query);
-      if (result.length <= 2) {
+      if (result.length <= 3) {
         return true;
       }
       return false;
