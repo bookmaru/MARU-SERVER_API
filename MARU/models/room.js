@@ -166,7 +166,7 @@ quizRoom: async (roomIdx) => {
     } catch (err) {
       console.log(err);
     }
-  },
+  }
 }
 
 module.exports = room;
