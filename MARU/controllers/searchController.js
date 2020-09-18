@@ -65,9 +65,9 @@ const search = {
      * @return author, title, thumbnail, info, nickName, time
      */
   room : async (req, res) => {
-    const { title } = req.query;
+    const { title, pageStart, pageEnd } = req.query;
     
-    if (!title) {
+    if (!title || pageStart === undefined || pageEnd === undefined) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
     }
@@ -83,7 +83,7 @@ const search = {
     // 비회원 유저
     if (!token) {
       try {  
-        const result = await searchModel.NotLoginUserSearch(titleConsonatVowel);
+        const result = await searchModel.NotLoginUserSearch(titleConsonatVowel, pageStart, pageEnd);
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_SEARCH, result));
         return;
       } catch (err) {

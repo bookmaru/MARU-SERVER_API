@@ -19,7 +19,7 @@ const chat = {
 
 //db에서 내용 가져오기
   getChat: async (roomIdx, pageStart, pageEnd) => {
-    const query = `SELECT * FROM ${table} WHERE roomIdx = ${roomIdx} ORDER BY roomIdx DESC LIMIT ${pageStart}, ${pageEnd} `;
+    const query = `SELECT * FROM ${table} WHERE roomIdx = ${roomIdx} ORDER BY chatTime DESC LIMIT ${pageStart}, ${pageEnd}`;
     try {
       const result = await pool.queryParamArr(query);
       return result;

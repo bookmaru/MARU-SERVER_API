@@ -51,10 +51,9 @@ const room = {
 
   // 토론방 참여 제한
   limitJoin: async (userIdx) => {
-    const query = `SELECT p.roomIdx FROM participant p join room r on p.roomIdx=r.roomIdx WHERE p.userIdx = ${userIdx} and r.expired='false' `;
+    const query = `SELECT p.roomIdx FROM participant p join room r on p.roomIdx = r.roomIdx WHERE p.userIdx = ${userIdx} and r.expired = 'false' and p.roomIdx not in (select roomIdx from room where userIdx = ${userIdx})`;
     try {
       const result = await pool.queryParam(query);
-      console.log(result.length)
       if (result.length < 2) {
         return true;
       }
