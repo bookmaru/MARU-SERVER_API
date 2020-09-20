@@ -7,7 +7,7 @@ const jwt = require('../modules/jwt')
 const roomModel = require('../models/room');
 
 module.exports = {
-  signup : async ( req, res ) => {
+  signup: async (req, res) => {
     const {
       id,
       password,
@@ -40,8 +40,8 @@ module.exports = {
       hashed
     } = await encrypt.encrypt(password);
 
-    const idx = await userModel.signup( id, hashed, salt, nickName, rating, count, deviceToken);
-    if ( idx === -1 ) {
+    const idx = await userModel.signup(id, hashed, salt, nickName, rating, count, deviceToken);
+    if (idx === -1) {
       return res.status(statusCode.DB_ERROR)
         .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
     }
@@ -62,10 +62,10 @@ module.exports = {
       .send(util.success(statusCode.OK, resMessage.CREATED_USER, {
         accessToken: token,
         refreshToken: refreshToken
-      }));     
+      }));
   },
 
-  signin : async (req, res) => {
+  signin: async (req, res) => {
     const {
       id,
       password
@@ -78,7 +78,7 @@ module.exports = {
     }
 
     // User의 아이디가 있는지 확인 - 없다면 NO_USER 반납
-    const user = await userModel.findByUserId(id); 
+    const user = await userModel.findByUserId(id);
 
     if (user[0] === undefined) {
       return res.status(statusCode.BAD_REQUEST)
@@ -103,11 +103,11 @@ module.exports = {
       .send(util.success(statusCode.OK, resMessage.LOGIN_SUCCESS, {
         accessToken: token,
         refreshToken: refreshToken
-    }));
+      }));
   },
 
-  withdrawal : async (req, res) => {
-    const { password} = req.body;
+  withdrawal: async (req, res) => {
+    const { password } = req.body;
     const userIdx = req.userIdx;
 
     if (!userIdx || !password) {
@@ -138,20 +138,20 @@ module.exports = {
       .send(util.success(statusCode.OK, resMessage.WITHDRAWAL_SUCCESS));
   },
 
-  profile : async(req, res) => {
+  profile: async (req, res) => {
     const userIdx = req.userIdx;
     if (!userIdx) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN))
       return;
     }
     const idx = await userModel.profile(userIdx);
-    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_PROFILE_READ, 
+    res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_PROFILE_READ,
       idx
     ))
   },
 
-  checkUserId : async(req, res) => {
-    const {id} = req.body;
+  checkUserId: async (req, res) => {
+    const { id } = req.body;
 
     if (!id) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE))
@@ -168,8 +168,8 @@ module.exports = {
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.AVAILABLE_ID))
   },
 
-  checkUserNickName : async(req, res) => {
-    const {nickName} = req.body;
+  checkUserNickName: async (req, res) => {
+    const { nickName } = req.body;
 
     if (!nickName) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE))
@@ -186,20 +186,20 @@ module.exports = {
     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.AVAILABLE_NICKNAME))
   },
 
-  rating : async ( req, res ) => {
-    const {nickName} = req.body;
-    let {rating} = req.body;
-    if (!rating){
+  rating: async (req, res) => {
+    const { nickName } = req.body;
+    let { rating } = req.body;
+    if (!rating) {
       rating = 3;
     }
     if (!nickName) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE))
       return;
-  }
+    }
 
     const idx = await userModel.rating(nickName, rating);
-    console.log({rating});
-    if ( idx === -1 ) {
+    console.log({ rating });
+    if (idx === -1) {
       return res.status(statusCode.DB_ERROR)
         .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
     }
@@ -208,11 +208,11 @@ module.exports = {
       .send(util.success(statusCode.OK, resMessage.UPDATE_RATING));
   },
 
-/*
-* 나의 모임
-* param token
-* return thumbnail, title, authors, info (최근 채팅 수)
-*/
+  /*
+  * 나의 모임
+  * param token
+  * return thumbnail, title, authors, info (최근 채팅 수)
+  */
 
   myRoom: async (req, res) => {
     const userIdx = req.userIdx;
@@ -229,7 +229,7 @@ module.exports = {
 
   report: async (req, res) => {
     const reporterIdx = req.userIdx;
-    
+
     if (!reporterIdx) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.EMPTY_TOKEN));
       return;
@@ -242,13 +242,13 @@ module.exports = {
 
     if (!reportMsg || !reportNickName) {
       res.status(statusCode.BAD_REQUEST)
-      .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
-    return;
+        .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+      return;
     }
 
     const report = await userModel.report(reporterIdx, reportMsg, reportNickName);
     res.status(statusCode.OK)
-    .send(util.success(statusCode.OK, resMessage.REPORT_SUCCESS, report));
+      .send(util.success(statusCode.OK, resMessage.REPORT_SUCCESS, report));
 
   },
 
@@ -260,17 +260,40 @@ module.exports = {
       return;
     }
 
-    const {deviceToken} = req.body;
+    const { deviceToken } = req.body;
 
-    if(!deviceToken){
+    if (!deviceToken) {
       res.status(statusCode.BAD_REQUEST)
-      .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
-    return;
+        .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+      return;
     }
     const result = await userModel.updateToken(userIdx, deviceToken);
     res.status(statusCode.OK)
-    .send(util.success(statusCode.OK, resMessage.UPDATE_TOKEN_SUCCESS, {
-      deviceToken: deviceToken
-    }));
+      .send(util.success(statusCode.OK, resMessage.UPDATE_TOKEN_SUCCESS, {
+        deviceToken: deviceToken
+      }));
+  },
+
+  checkDeviceToken: async (req, res) => {
+    const devicetoken = req.headers.devicetoken;
+  
+
+    if (!devicetoken) {
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+      return;
+    }
+
+    try {
+      const checkDeviceToken = await userModel.checkDeviceToken(devicetoken);
+      if (checkDeviceToken) {
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.POSSIBLE_JOIN_USER_DEVICE_TOKEN))
+        return;
+      }
+      res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NOT_POSSIBLE_JOIN_USER_DEVICE_TOKEN));
+      return;
+    } catch (err) {
+      console.log(err);
+      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
+    }
   }
 }

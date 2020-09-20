@@ -25,6 +25,8 @@ module.exports = {
     INVALID_TOKEN : "토큰이 잘못되었습니다",
     SUCCESS_TOKEN_REPLACEMENT : "토큰을 재발급했습니다",
     UPDATE_TOKEN_SUCCESS : "디바이스 토큰 갱신 성공",
+    POSSIBLE_JOIN_USER_DEVICE_TOKEN : "회원가입 가능한 디바이스 토큰입니다",
+    NOT_POSSIBLE_JOIN_USER_DEVICE_TOKEN : "디바이스 토큰이 중복됩니다",
 
     EXPIRED_TOKEN : "토큰이 만료되었습니다",
     INVALID_TOKEN : "토큰이 잘못되었습니다",

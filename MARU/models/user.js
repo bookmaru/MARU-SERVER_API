@@ -157,6 +157,20 @@ const user = {
       console.log('Update Device Token ERROR : ', err);
       throw err;
   }
+  },
+
+  checkDeviceToken: async (deviceToken) => {
+    const query = `SELECT * FROM ${table} WHERE deviceToken = "${deviceToken}"`;
+    try {
+      const result = await pool.queryParam(query);
+      if (result.length === 0) {
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   }
   
 }
