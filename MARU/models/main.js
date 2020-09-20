@@ -15,8 +15,8 @@ const main = {
   },
 
   // 새로나온 모임 
-  newRoom: async(pageStart, pageEnd) => {
-    const query = `SELECT r.roomIdx, r.thumbnail, r.authors, r.title, r.info, u.nickName FROM room r JOIN user u ON r.userIdx = u.userIdx where r.expired = 'false' ORDER BY roomIdx DESC LIMIT ${pageStart}, ${pageEnd}`;
+  newRoom: async(userIdx, pageStart, pageEnd) => {
+    const query = `SELECT r.roomIdx, r.thumbnail, r.authors, r.title, r.info, u.nickName FROM room r JOIN user u ON r.userIdx = u.userIdx where r.expired = 'false' and r.roomIdx not in (select roomIdx from participant where userIdx = ${userIdx}) ORDER BY roomIdx DESC LIMIT ${pageStart}, ${pageEnd}`;
     try {
       const result = await pool.queryParam(query);
       return result;

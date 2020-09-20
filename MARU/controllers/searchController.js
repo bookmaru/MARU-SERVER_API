@@ -93,6 +93,7 @@ const search = {
       }
     };
 
+    // 회원 유저 
     const user = await jwt.verify(token);
 
     if (user === TOKEN_EXPIRED) {
