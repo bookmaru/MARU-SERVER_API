@@ -48,7 +48,7 @@ const main = {
       try {
         const getExpired = await roomModel.getExpired();
         // 가장 최근에 개설된 방 순서대로
-        const newRoomList = await mainModel.newRoom(pageStart, pageEnd);
+        const newRoomList = await mainModel.NotLoginUserNewRoom(pageStart, pageEnd);
 
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_MAIN_VIEW_LIST2, {
           newRoomList: newRoomList
@@ -80,7 +80,7 @@ const main = {
     try {
       const getExpired = await roomModel.getExpired();
       // 가장 최근에 개설된 방 순서대로
-      const newRoomList = await mainModel.newRoom(user.userIdx, pageStart, pageEnd);
+      const newRoomList = await mainModel.LoginUserNewRoom(user.userIdx, pageStart, pageEnd);
 
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_MAIN_VIEW_LIST2, {
         newRoomList: newRoomList
