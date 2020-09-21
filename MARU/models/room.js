@@ -23,7 +23,7 @@ const room = {
     // 토론방에 방장 userIdx추가 - participant 테이블
     addUser : async (userIdx, roomIdx, disconnectFlag) => {
       const fields = 'userIdx, roomIdx, disconnectFlag';
-      const questions = `?, ?, ?`;
+      const questions = `?, ?, ?`; 
       const values = [userIdx, roomIdx, 1];
       const query = `INSERT INTO participant(${fields}) VALUES(${questions})`; 
       try {
