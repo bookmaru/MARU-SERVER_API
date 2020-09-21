@@ -134,6 +134,7 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         const questions = `?, ?, ?, ?`;
         const values = [name, msg, chatTime, roomIdx];
         const query = `INSERT INTO chat(${fields}) VALUES(${questions})`; 
+        console.log(query);
 
         const result = pool.queryParamArr(query,values)
         console.log(result)
