@@ -123,7 +123,7 @@ quizRoom: async (roomIdx) => {
 
   // 퀴즈 불합격
   quizFail: async (userIdx, roomIdx) => {
-    const query = `INSERT INTO quizFail (userIdx, roomIdx, entry) VALUES (${userIdx}, ${roomIdx}, 'FAIL')`;
+    const query = `INSERT INTO quizFail (userIdx, roomIdx) VALUES (${userIdx}, ${roomIdx})`;
     try {
       const result = await pool.queryParam(query);
       return result;
