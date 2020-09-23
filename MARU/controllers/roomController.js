@@ -173,7 +173,14 @@ const room = {
       }
     }
 
-    res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.FAIL_QUIZ_SOLVED));
+    try {
+      const quizFail = await roomModel.quizFail(userIdx, roomIdx);
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.FAIL_QUIZ_SOLVED));
+    } catch (err) {
+      res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+      return;
+    }
+
   },
 
 
