@@ -92,7 +92,10 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
       // room 나가기 : socket.leave
       socket.on('leaveRoom', (roomIdx, name) => {
         socket.leave(room[roomIdx], () => {
-          console.log(name + ' leave a ' + room[roomIdx]);
+          console.log("=========leave ROOM==============");
+          console.log("닉네임 :  " + name);
+          console.log("방번호 : " + room[roomIdx]);
+          console.log("=========leave ROOM==============");
           io.to(room[roomIdx]).emit('leaveRoom', roomIdx, name);
         });
       });
@@ -112,9 +115,12 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         socket.on('joinRoom', (roomIdx, name) => {
         socket.join(room[roomIdx], () => {
           room.push('room'+roomIdx);
-          console.log(name + ' join a ' + room[roomIdx]);
+          console.log("=========JOIN ROOM==============");
+          console.log("닉네임 :  " + name);
+          console.log("방번호 : " + room[roomIdx]);
+          console.log("=========JOIN ROOM==============");
           const query = `UPDATE participant SET disconnectFlag = 1 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
-          const  result = pool.queryParam(query);
+          const result = pool.queryParam(query);
           //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
           io.to(room[roomIdx]).emit('joinRoom', roomIdx,name);
         });
@@ -126,12 +132,12 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         var date = new Date(); 
         let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
 
-        console.log("=======================")
+        console.log("==========채팅=============");
         console.log("닉네임 :  " + name);
         console.log("메세지 : " + msg);
         console.log("채팅시간 : " + chatTime);
         console.log("방번호 : " + roomIdx + 1);
-        console.log("=======================")
+        console.log("==========채팅=============");
 
         const fields = 'nickName, msg, chatTime, roomIdx';
         const questions = `?, ?, ?, ?`;
