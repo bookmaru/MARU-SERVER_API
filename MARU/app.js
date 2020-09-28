@@ -103,9 +103,9 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
 
         const query = `UPDATE participant SET disconnectTime = "${disconnectTime}",
           disconnectFlag = 0 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
-        const  result = pool.queryParam(query);
-        console.log(query)
-        console.log(result)
+        const result = pool.queryParam(query);
+        
+        
       });
       // room 접속  socket.join
       // 특정 room 에게 이벤트 보낼 시 : io.to('room이름').emit()
@@ -115,7 +115,7 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
           console.log(room)
           console.log(name + ' join a ' + room[roomIdx]);
           const query = `UPDATE participant SET disconnectFlag = 1 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
-        const  result = pool.queryParam(query);
+          const  result = pool.queryParam(query);
           //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
           io.to(room[roomIdx]).emit('joinRoom', roomIdx,name);
         });
@@ -127,16 +127,21 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         var date = new Date(); 
         let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
 
-        console.log(name, msg, chatTime, roomIdx+1)
+        console.log("=======================")
+        console.log("닉네임은 " + name);
+        console.log("메세지는 " + msg);
+        console.log("채팅시간은 " + chatTime);
+        console.log("방번호는 " + roomIdx + 1);
+        console.log("=======================")
 
         const fields = 'nickName, msg, chatTime, roomIdx';
         const questions = `?, ?, ?, ?`;
         const values = [name, msg, chatTime, roomIdx];
         const query = `INSERT INTO chat(${fields}) VALUES(${questions})`; 
-        console.log(query);
+
 
         const result = pool.queryParamArr(query,values)
-        console.log(result)
+        
         io.to(room[a]).emit('chat message', name, msg);
       });
 

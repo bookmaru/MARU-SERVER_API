@@ -13,7 +13,6 @@ const main = {
       throw err;
     }
   },
-
   // 비로그인 유저 새로나온 모임 
   NotLoginUserNewRoom: async(pageStart, pageEnd) => {
     const query = `SELECT r.roomIdx, r.thumbnail, r.authors, r.title, r.info, u.nickName FROM room r JOIN user u ON r.userIdx = u.userIdx where r.expired = 'false' ORDER BY roomIdx DESC LIMIT ${pageStart}, ${pageEnd}`;
