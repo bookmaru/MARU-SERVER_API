@@ -24,7 +24,7 @@ const room = {
     addUser : async (userIdx, roomIdx, disconnectTime, disconnectFlag) => {
       const fields = 'userIdx, roomIdx, disconnectTime, disconnectFlag';
       const questions = `?, ?, ?, ?`; 
-      const values = [userIdx, roomIdx, disconnectTime, 0];
+      const values = [userIdx, roomIdx, disconnectTime, disconnectFlag];
       const query = `INSERT INTO participant(${fields}) VALUES(${questions})`; 
       try {
         const result = await pool.queryParamArr(query, values);
