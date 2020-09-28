@@ -112,7 +112,6 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         socket.on('joinRoom', (roomIdx, name) => {
         socket.join(room[roomIdx], () => {
           room.push('room'+roomIdx);
-          console.log(room)
           console.log(name + ' join a ' + room[roomIdx]);
           const query = `UPDATE participant SET disconnectFlag = 1 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
         const  result = pool.queryParam(query);
