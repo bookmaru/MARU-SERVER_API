@@ -127,10 +127,10 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
         let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
 
         console.log("=======================")
-        console.log("닉네임은 " + name);
-        console.log("메세지는 " + msg);
-        console.log("채팅시간은 " + chatTime);
-        console.log("방번호는 " + roomIdx + 1);
+        console.log("닉네임 :  " + name);
+        console.log("메세지 : " + msg);
+        console.log("채팅시간 : " + chatTime);
+        console.log("방번호 : " + roomIdx + 1);
         console.log("=======================")
 
         const fields = 'nickName, msg, chatTime, roomIdx';
