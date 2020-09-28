@@ -80,7 +80,6 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
       room.push('room'+results[i].roomIdx)
     }
 
-    console.log(room)
     let a = 0 ;
 
 // 'connection' 이벤트 발생

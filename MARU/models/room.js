@@ -21,10 +21,10 @@ const room = {
   },
 
     // 토론방에 방장 userIdx추가 - participant 테이블
-    addUser : async (userIdx, roomIdx, disconnectFlag) => {
-      const fields = 'userIdx, roomIdx, disconnectFlag';
-      const questions = `?, ?, ?`; 
-      const values = [userIdx, roomIdx, 1];
+    addUser : async (userIdx, roomIdx, disconnectTime, disconnectFlag) => {
+      const fields = 'userIdx, roomIdx, disconnectTime, disconnectFlag';
+      const questions = `?, ?, ?, ?`; 
+      const values = [userIdx, roomIdx, disconnectTime, 0];
       const query = `INSERT INTO participant(${fields}) VALUES(${questions})`; 
       try {
         const result = await pool.queryParamArr(query, values);
