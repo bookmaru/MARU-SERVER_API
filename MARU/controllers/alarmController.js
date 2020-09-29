@@ -6,6 +6,13 @@ const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 
 const alarm = {
+
+    /** 
+      * @summary 채팅 알람
+      * @param roomIdx
+      * @param title, nickName, message
+      * @return 
+    */
     alarm: async (req, res) => {
         const roomIdx = req.params.roomIdx;
         const {title, nickName, message} = req.body;

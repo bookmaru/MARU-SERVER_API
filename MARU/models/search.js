@@ -18,6 +18,7 @@ const search = {
     }
   },
 
+  // 비로그인 한 유저가 인원이 5명 미만 + 퀴즈에 불합격 하지 않은 모임만 나오는 쿼리
   NotLoginUserSearch: async (title, pageStart, pageEnd) => {
     const query = `SELECT r.roomIdx, r.thumbnail, r.title, r.authors, r.info, r.createdAt, u.nickName FROM room r JOIN user u ON r.userIdx = u.userIdx WHERE r.consonantVowel LIKE '%${title}%' LIMIT ${pageStart}, ${pageEnd}`;
     try {

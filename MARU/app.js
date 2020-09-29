@@ -136,7 +136,7 @@ connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
       console.log("닉네임 :  " + name);
       console.log("메세지 : " + msg);
       console.log("채팅시간 : " + chatTime);
-      console.log("방번호 : " + roomIdx + 1);
+      console.log("방번호 : " + roomIdx);
       console.log("==========채팅=============");
 
       const fields = 'nickName, msg, chatTime, roomIdx';
