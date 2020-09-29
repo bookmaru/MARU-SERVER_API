@@ -35,8 +35,8 @@ const room = {
       const searchKeyword = title.replace(/(\s*)/g,"");
       const consonantVowel = Hangul.disassemble(searchKeyword);
       moment.tz.setDefault("Asia/Seoul");
-      const createdAt = moment().format('YYYY-MM-DD HH:mm:ss')
-      const disconnectTime = moment().format('YYYY-MM-DD HH:mm:ss')
+      const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
+      const disconnectTime = moment().format('YYYY-MM-DD HH:mm:ss');
       // 자모음 분리 결과가 배열이라 문자열로 합치기 
       const titleConsonatVowel = consonantVowel.join("");
       const disconnectFlag = 0;

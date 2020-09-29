@@ -37,12 +37,12 @@ app.use('/chat/:roomIdx', chat);
 
 app.use('/', indexRouter);
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -52,106 +52,106 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-server.listen(8080, function(){
+server.listen(8080, function () {
   console.log("Express server listening on port " + 8080);
 });
 
 
 /* GET 방식으로 / 경로에 접속하면 실행 됨 */
-app.get('/', function(request, response) {
-  fs.readFile('./index.ejs', function(err, data) {
-    if(err) {
+app.get('/', function (request, response) {
+  fs.readFile('./index.ejs', function (err, data) {
+    if (err) {
       response.send('에러')
     } else {
-      response.writeHead(200, {'Content-Type':'text/html'})
+      response.writeHead(200, { 'Content-Type': 'text/html' })
       response.write(data)
       response.end()
     }
   })
 })
-  
+
 connection.query('SELECT roomIdx FROM room', function (error, results, fields) {
-    if (error) {
-        console.log(error);
-    }
+  if (error) {
+    console.log(error);
+  }
 
-    let room = ['room0'];
-    for( var i in results){
-      room.push('room'+results[i].roomIdx)
-    }
+  let room = ['room0'];
+  for (var i in results) {
+    room.push('room' + results[i].roomIdx)
+  }
 
-    let a = 0 ;
+  let a = 0;
 
-// 'connection' 이벤트 발생
-    io.on('connection', (socket) => {
+  // 'connection' 이벤트 발생
+  io.on('connection', (socket) => {
 
-      // 클라이언트 접속 끊을 시 on('disconnect') 발생
-      socket.on('disconnect', () => {
-        console.log('user disconnected');
-      });
-      // room 나가기 : socket.leave
-      socket.on('leaveRoom', (roomIdx, name) => {
-        socket.leave(room[roomIdx], () => {
-          console.log("=========leave ROOM==============");
-          console.log("닉네임 :  " + name);
-          console.log("방번호 : " + room[roomIdx]);
-          console.log("=========leave ROOM==============");
-          io.to(room[roomIdx]).emit('leaveRoom', roomIdx, name);
-        });
-      });
-      // 토론에서 벗어난 시간 체크
-      socket.on('leave', (name, roomIdx) => {
-        var date=new Date();
-        let disconnectTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
-
-        const query = `UPDATE participant SET disconnectTime = "${disconnectTime}",
-          disconnectFlag = 0 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
-        const result = pool.queryParam(query);
-        
-        
-      });
-      // room 접속  socket.join
-      // 특정 room 에게 이벤트 보낼 시 : io.to('room이름').emit()
-        socket.on('joinRoom', (roomIdx, name) => {
-        socket.join(room[roomIdx], () => {
-          room.push('room'+roomIdx);
-          console.log("=========JOIN ROOM==============");
-          console.log("닉네임 :  " + name);
-          console.log("방번호 : " + room[roomIdx]);
-          console.log("=========JOIN ROOM==============");
-          const query = `UPDATE participant SET disconnectFlag = 1 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`; 
-          const result = pool.queryParam(query);
-          //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
-          io.to(room[roomIdx]).emit('joinRoom', roomIdx,name);
-        });
-      });
-
-//클라 : socket.emit('chat message') , 서버 : socket.on('chat message') 매개변수 : name, msg, roomIdx
-      socket.on('chat message', (name, msg, roomIdx) => {
-        a=roomIdx;
-        var date = new Date(); 
-        let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
-
-        console.log("==========채팅=============");
+    // 클라이언트 접속 끊을 시 on('disconnect') 발생
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+    // room 나가기 : socket.leave
+    socket.on('leaveRoom', (roomIdx, name) => {
+      socket.leave(room[roomIdx], () => {
+        console.log("=========leave ROOM==============");
         console.log("닉네임 :  " + name);
-        console.log("메세지 : " + msg);
-        console.log("채팅시간 : " + chatTime);
-        console.log("방번호 : " + roomIdx + 1);
-        console.log("==========채팅=============");
-
-        const fields = 'nickName, msg, chatTime, roomIdx';
-        const questions = `?, ?, ?, ?`;
-        const values = [name, msg, chatTime, roomIdx];
-        const query = `INSERT INTO chat(${fields}) VALUES(${questions})`; 
-
-
-        const result = pool.queryParamArr(query,values)
-        
-        io.to(room[a]).emit('chat message', name, msg);
-      });
-
+        console.log("방번호 : " + room[roomIdx]);
+        console.log("=========leave ROOM==============");
+        io.to(room[roomIdx]).emit('leaveRoom', roomIdx, name);
       });
     });
+    // 토론에서 벗어난 시간 체크
+    socket.on('leave', (name, roomIdx) => {
+      var date = new Date();
+      let disconnectTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
+
+      const query = `UPDATE participant SET disconnectTime = "${disconnectTime}",
+          disconnectFlag = 0 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`;
+      const result = pool.queryParam(query);
+
+
+    });
+    // room 접속  socket.join
+    // 특정 room 에게 이벤트 보낼 시 : io.to('room이름').emit()
+    socket.on('joinRoom', (roomIdx, name) => {
+      socket.join(room[roomIdx], () => {
+        room.push('room' + roomIdx);
+        console.log("=========JOIN ROOM==============");
+        console.log("닉네임 :  " + name);
+        console.log("방번호 : " + room[roomIdx]);
+        console.log("=========JOIN ROOM==============");
+        const query = `UPDATE participant SET disconnectFlag = 1 WHERE userIdx = (select userIdx from user where nickName = "${name}") and roomIdx = ${roomIdx}`;
+        const result = pool.queryParam(query);
+        //console.log(Object.keys(io.sockets.in(room[num]).connected).length)
+        io.to(room[roomIdx]).emit('joinRoom', roomIdx, name);
+      });
+    });
+
+    //클라 : socket.emit('chat message') , 서버 : socket.on('chat message') 매개변수 : name, msg, roomIdx
+    socket.on('chat message', (name, msg, roomIdx) => {
+      a = roomIdx;
+      var date = new Date();
+      let chatTime = moment(date).format('YYYY-MM-DD HH:mm:ss');
+
+      console.log("==========채팅=============");
+      console.log("닉네임 :  " + name);
+      console.log("메세지 : " + msg);
+      console.log("채팅시간 : " + chatTime);
+      console.log("방번호 : " + roomIdx + 1);
+      console.log("==========채팅=============");
+
+      const fields = 'nickName, msg, chatTime, roomIdx';
+      const questions = `?, ?, ?, ?`;
+      const values = [name, msg, chatTime, roomIdx];
+      const query = `INSERT INTO chat(${fields}) VALUES(${questions})`;
+
+
+      const result = pool.queryParamArr(query, values)
+
+      io.to(room[a]).emit('chat message', name, msg);
+    });
+
+  });
+});
 
 
 module.exports = app;
