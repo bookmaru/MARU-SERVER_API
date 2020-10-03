@@ -45,6 +45,7 @@ const search = {
           bookList.push({
             authors : item.authors[0],
             title : item.title,
+            isbn : item.isbn,
             thumbnail : item.thumbnail
           })
         }

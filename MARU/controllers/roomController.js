@@ -22,9 +22,9 @@ const room = {
       return;
     }
 
-    const { thumbnail, authors, title, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, expired} = req.body;
+    const { thumbnail, authors, title, isbn, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, expired} = req.body;
 
-    if (!thumbnail || !authors || !title || !info || !quiz1 || !quiz2 || !quiz3 || !quiz4 || !quiz5 || !answer1 || !answer2 || !answer3 || !answer4 || !answer5) {
+    if (!thumbnail || !authors || !title || !isbn || !info || !quiz1 || !quiz2 || !quiz3 || !quiz4 || !quiz5 || !answer1 || !answer2 || !answer3 || !answer4 || !answer5) {
       res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
       return;
     }
@@ -40,7 +40,7 @@ const room = {
       // 자모음 분리 결과가 배열이라 문자열로 합치기 
       const titleConsonatVowel = consonantVowel.join("");
       const disconnectFlag = 0;
-      const roomMake = await roomModel.make(thumbnail, authors, title, titleConsonatVowel, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx);
+      const roomMake = await roomModel.make(thumbnail, authors, title, titleConsonatVowel, isbn, info, quiz1, quiz2, quiz3, quiz4, quiz5, answer1, answer2, answer3, answer4, answer5, createdAt, userIdx);
       const participantAdd = await roomModel.addUser(userIdx, roomMake,disconnectTime, disconnectFlag);
       res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.MAKE_ROOM_SUCCESS, {
         roomIdx: roomMake
