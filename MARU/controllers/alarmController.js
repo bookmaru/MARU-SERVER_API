@@ -62,6 +62,7 @@ const alarm = {
                 },
             };
 
+            console.log("======성공직전=========");
             admin.messaging().sendToDevice(registrationTokens, payload, options).then(function (response) {
                 console.log('성공 메세지!' + response);
                 res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_ALARM));
