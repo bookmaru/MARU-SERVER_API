@@ -69,6 +69,7 @@ const alarm = {
                 return;
             });
         } catch (err) {
+            console.log("여기??");
             res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
             return;
         }
