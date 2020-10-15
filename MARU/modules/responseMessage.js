@@ -61,4 +61,5 @@ module.exports = {
 
     // 알람
     SUCCESS_ALARM : "알람 성공입니다",
+    NO_ALARM : "알람을 보낼 곳이 없습니다",
 };

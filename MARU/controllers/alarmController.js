@@ -24,10 +24,14 @@ const alarm = {
 
         try {
             const deviceTokens = await alarmModel.getDeviceToken(roomIdx, nickName);
-            console.log("알람을 보낼 디바이스토큰 : " + deviceTokens);
             const registrationTokens = [];
 
             for (let i = 0; i < deviceTokens.length; ++i) {
+                console.log("알람을 보낼 디바이스토큰 : " + deviceTokens[i].deviceToken);
+                if (deviceTokens[i].deviceToken == null) {
+                    res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.NO_ALARM));
+                    return;
+                }
                 registrationTokens.push(deviceTokens[i].deviceToken);
             }
 
