@@ -25,7 +25,7 @@ const alarm = {
         try {
             const deviceTokens = await alarmModel.getDeviceToken(roomIdx, nickName);
             const registrationTokens = [];
-            console.log("알람을 보낼 디바이스토큰 : " + deviceTokens[0].deviceToken);
+            console.log("알람을 보낼 디바이스토큰 : " + deviceTokens);
 
             if (deviceTokens == null) {
                 res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.NO_ALARM));
@@ -35,6 +35,11 @@ const alarm = {
             for (let i = 0; i < deviceTokens.length; ++i) {
                 console.log("알람을 보낼 디바이스토큰 : " + deviceTokens[i].deviceToken);
                 registrationTokens.push(deviceTokens[i].deviceToken);
+            }
+
+            if (registrationTokens == null) {
+                res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.NO_ALARM));
+                return;
             }
 
             if (!admin.apps.length) {
