@@ -36,10 +36,13 @@ const alarm = {
                 registrationTokens.push(deviceTokens[i].deviceToken);
             }
 
+            console.log("길이");
             if (registrationTokens.length == null) {
                 res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.NO_ALARM));
                 return;
             }
+            
+            console.log("여기까지 오나?");
 
             if (!admin.apps.length) {
                 admin.initializeApp({
