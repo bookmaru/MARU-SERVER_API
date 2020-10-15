@@ -28,10 +28,6 @@ const alarm = {
             const registrationTokens = [];
 
             for (let i = 0; i < deviceTokens.length; ++i) {
-                if (deviceTokens[i].deviceToken == null) {
-                    res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
-                    return;
-                }
                 registrationTokens.push(deviceTokens[i].deviceToken);
             }
 
