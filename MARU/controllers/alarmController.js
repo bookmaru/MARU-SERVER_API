@@ -26,7 +26,7 @@ const alarm = {
             const deviceTokens = await alarmModel.getDeviceToken(roomIdx, nickName);
             const registrationTokens = [];
 
-            if (deviceTokens.length == null) {
+            if (deviceTokens.length === 0) {
                 res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.NO_ALARM));
                 return;
             }
@@ -36,13 +36,11 @@ const alarm = {
                 registrationTokens.push(deviceTokens[i].deviceToken);
             }
 
-            console.log("길이");
-            if (registrationTokens.length == null) {
+            if (registrationTokens.length === 0) {
                 res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.NO_ALARM));
                 return;
             }
             
-            console.log("여기까지 오나?");
 
             if (!admin.apps.length) {
                 admin.initializeApp({
@@ -62,7 +60,6 @@ const alarm = {
                 },
             };
 
-            console.log("======성공직전=========");
             admin.messaging().sendToDevice(registrationTokens, payload, options).then(function (response) {
                 console.log('성공 메세지!' + response);
                 res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SUCCESS_ALARM));
@@ -73,7 +70,6 @@ const alarm = {
                 return;
             });
         } catch (err) {
-            console.log("여기??");
             res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.INTERNAL_SERVER_ERROR));
             return;
         }
