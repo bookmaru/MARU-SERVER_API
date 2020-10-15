@@ -32,7 +32,6 @@ const alarm = {
             }
 
             for (let i = 0; i < deviceTokens.length; ++i) {
-                console.log("알람을 보낼 디바이스토큰 : " + deviceTokens[i].deviceToken);
                 registrationTokens.push(deviceTokens[i].deviceToken);
             }
 
