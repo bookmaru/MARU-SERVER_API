@@ -34,11 +34,6 @@ const alarm = {
             for (let i = 0; i < deviceTokens.length; ++i) {
                 registrationTokens.push(deviceTokens[i].deviceToken);
             }
-
-            if (registrationTokens.length === 0) {
-                res.status(statusCode.OK).send(util.fail(statusCode.OK, resMessage.NO_ALARM));
-                return;
-            }
             
 
             if (!admin.apps.length) {
