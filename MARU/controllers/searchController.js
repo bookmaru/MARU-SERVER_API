@@ -16,7 +16,7 @@ const search = {
   /** 
      * @summary 토론방 만들기 위해 책 검색
      * @param 책 제목(title)
-     * @return author, title, thumbnail
+     * @return author, title, isbn, thumbnail
      */
   kakao: async (req, res) => {
     const { title } = req.query;
